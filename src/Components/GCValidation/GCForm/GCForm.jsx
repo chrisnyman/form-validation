@@ -14,7 +14,6 @@ class GCForm extends Component {
   getInputData(children) {
     const inputArr = children.filter((child) => {
       const isInput = child.type.name === 'GCInput';
-      child.props.touchChild = true;
       return isInput;
     });
     console.log(inputArr);

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import './gc-input.css';
 
+let errorMessage;
+
 class GCInput extends Component {
   constructor(props, context) {
     super(props, context);
@@ -10,9 +12,8 @@ class GCInput extends Component {
     this.state = {
       value: this.props.initialValue,
       type: 'text',
-      maxLength: this.props.maxLength || 50,
-      minLength: this.props.minLength || 0,
-      isValid: undefined
+      isValid: undefined,
+      errorMessage: ''
     };
   }
 
@@ -21,27 +22,25 @@ class GCInput extends Component {
   }
 
   determineType(type) {
-    console.log(type);
     let foo;
     switch (type) {
       case 'name':
-        foo = {type: 'text'};
+        foo = 'text';
         break;
       case 'email':
-        foo = {type: 'email'};
+        foo = 'email';
         break;
       case 'password':
-        foo = {
-          type: 'password',
-          minLength: 8
-        };
+        foo = 'password';
+        break;
+      case 'date':
+        foo = 'date';
         break;
       default:
-        foo = {type: 'text'};
+        foo = 'text';
         break;
     }
-    this.setState({ ...,
-    foo });
+    this.setState({ type: foo });
   }
 
   validateEmail() {
@@ -58,27 +57,39 @@ class GCInput extends Component {
     return this.state.value.length > this.state.minLength;
   }
 
+  validateDate() {
+    const min = new Date(this.props.minDate);
+    const max = new Date(this.props.maxDate);
+    const selectedDate = new Date(this.state.value);
+
+    if (min <= selectedDate && max >= selectedDate) {
+      return true;
+    }
+    errorMessage = `Please select a date between ${min.toDateString()} and ${max.toDateString()}`;
+    return false;
+  }
+
   // type string, email, numbers, address, date, date-range
   validateInput(type) {
     let valid;
 
     if (this.state.value) {
-
-      if(this.state.value < this.state.maxLength && this.state.value > this.state.minLength) {
-        switch (type) {
-          case 'email':
-            valid = this.validateEmail();
-            break;
-          case 'password':
-            valid = this.validatePassword();
-            break;
-          case 'name':
-            valid = this.validateName();
-            break;
-          default:
-            valid = true;
-            break;
-        }
+      switch (type) {
+        case 'email':
+          valid = this.validateEmail();
+          break;
+        case 'password':
+          valid = this.validatePassword();
+          break;
+        case 'name':
+          valid = this.validateName();
+          break;
+        case 'date':
+          valid = this.validateDate();
+          break;
+        default:
+          valid = true;
+          break;
       }
     }
 
@@ -91,7 +102,7 @@ class GCInput extends Component {
 
   render() {
     return (
-      <div className={`gc-input ${this.props.extendedClass}`}>
+      <div className={`gc-input ${!this.state.isValid && 'gc-input--invalid'} ${this.props.extendedClass}`}>
         <input
           disabled={this.props.disabled}
           name={this.props.name}
@@ -103,7 +114,7 @@ class GCInput extends Component {
         />
 
         {this.state.isValid === false && (
-          <p className="gc-input__error-msg">This is an error message</p>
+          <p className="gc-input__error-msg">{errorMessage}</p>
         )}
       </div>
     );
@@ -118,7 +129,9 @@ GCInput.propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
-  minLength: PropTypes.number
+  minLength: PropTypes.number,
+  maxDate: PropTypes.string,
+  minDate: PropTypes.string
 };
 
 GCInput.defaultProps = {
@@ -128,7 +141,9 @@ GCInput.defaultProps = {
   name: '',
   placeholder: '',
   maxLength: 50,
-  minLength: 0
+  minLength: 0,
+  maxDate: null,
+  minDate: null,
 };
 
 export default GCInput;

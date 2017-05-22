@@ -5,7 +5,12 @@
   margin-bottom: 0.6125rem;
 }
 
+.gc-input--invalid {
+  border-color: #f59393;
+}
+
 .gc-input__error-msg {
-  background-color: red;
+  padding: 0.625em;
+  background-color: #f59393;
   color: white;
 }

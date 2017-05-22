@@ -1,0 +1,11 @@
+.gc-input {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 0.6125rem;
+}
+
+.gc-input__error-msg {
+  background-color: red;
+  color: white;
+}

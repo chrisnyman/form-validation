@@ -82,6 +82,18 @@ class App extends Component {
               touchedByParent="false"
             />
 
+            <label
+              htmlFor="dateTxt"
+              className="gc-form__label"
+            >Date</label>
+            <GCInput
+              name="dateTxt"
+              type="date"
+              maxDate="2017-07-23"
+              valid
+              touchedByParent="false"
+            />
+
             <button className="gc-form__submit-btn">Submit</button>
 
           </GCForm>

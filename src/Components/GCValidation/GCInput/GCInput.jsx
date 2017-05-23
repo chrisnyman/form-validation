@@ -36,6 +36,9 @@ class GCInput extends Component {
       case 'date':
         foo = 'date';
         break;
+      case 'range':
+        foo = 'range';
+        break;
       default:
         foo = 'text';
         break;
@@ -45,16 +48,22 @@ class GCInput extends Component {
 
   validateEmail() {
     const pattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    return pattern.test(this.state.value);
+    const valid = pattern.test(this.state.value);
+
+    this.handleErrorMessage(valid, 'The email address you have entered is not valid');
+    return valid;
   }
 
   validateName() {
     const pattern = new RegExp(/\d/);
-    return !pattern.test(this.state.value);
+    const valid = !pattern.test(this.state.value);
+    return valid;
   }
 
   validatePassword() {
-    return this.state.value.length > this.state.minLength;
+    const valid = this.state.value.length > this.state.minLength;
+    this.handleErrorMessage(valid, 'Password needs to have more than 8 characters');
+    return valid;
   }
 
   validateDate() {
@@ -66,6 +75,7 @@ class GCInput extends Component {
       return true;
     }
     errorMessage = `Please select a date between ${min.toDateString()} and ${max.toDateString()}`;
+
     return false;
   }
 
@@ -87,6 +97,9 @@ class GCInput extends Component {
         case 'date':
           valid = this.validateDate();
           break;
+        case 'range':
+          console.log(this.state.value);
+          break;
         default:
           valid = true;
           break;
@@ -94,6 +107,12 @@ class GCInput extends Component {
     }
 
     this.setState({ isValid: valid });
+  }
+
+  handleErrorMessage(v, msg) {
+    if (!v) {
+      errorMessage = `${msg}`;
+    }
   }
 
   handleChange(value) {
@@ -111,6 +130,9 @@ class GCInput extends Component {
           placeholder={this.props.placeholder}
           onBlur={() => this.validateInput(this.props.type)}
           onChange={e => this.handleChange(e.target.value)}
+          min={this.props.min}
+          max={this.props.max}
+          defaultValue={this.props.defaultValue}
         />
 
         {this.state.isValid === false && (
@@ -131,7 +153,10 @@ GCInput.propTypes = {
   maxLength: PropTypes.number,
   minLength: PropTypes.number,
   maxDate: PropTypes.string,
-  minDate: PropTypes.string
+  minDate: PropTypes.string,
+  max: PropTypes.string,
+  min: PropTypes.string,
+  defaultValue: PropTypes.string
 };
 
 GCInput.defaultProps = {
@@ -144,6 +169,9 @@ GCInput.defaultProps = {
   minLength: 0,
   maxDate: null,
   minDate: null,
+  max: null,
+  min: null,
+  defaultValue: null
 };
 
 export default GCInput;

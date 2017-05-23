@@ -94,6 +94,20 @@ class App extends Component {
               touchedByParent="false"
             />
 
+            <label
+              htmlFor="rangeTxt"
+              className="gc-form__label"
+            >Date</label>
+            <GCInput
+              name="rangeTxt"
+              type="range"
+              max="20"
+              min="4"
+              defaultValue="9"
+              valid
+              touchedByParent="false"
+            />
+
             <button className="gc-form__submit-btn">Submit</button>
 
           </GCForm>

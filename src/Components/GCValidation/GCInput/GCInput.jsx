@@ -13,13 +13,16 @@ class GCInput extends Component {
       value: this.props.initialValue,
       type: 'text',
       isValid: undefined,
-      errorMessage: ''
+      errorMessage: '',
+
     };
   }
 
   componentWillMount() {
     this.determineType(this.props.type);
   }
+
+
 
   determineType(type) {
     let foo;
@@ -57,6 +60,9 @@ class GCInput extends Component {
   validateName() {
     const pattern = new RegExp(/\d/);
     const valid = !pattern.test(this.state.value);
+    if (this.state.value > this.props.minLength && this.state.value < this.props.maxLength) {
+      console.log('Right length');
+    }
     return valid;
   }
 
@@ -122,6 +128,12 @@ class GCInput extends Component {
   render() {
     return (
       <div className={`gc-input ${!this.state.isValid && 'gc-input--invalid'} ${this.props.extendedClass}`}>
+        { /*this.props.type === "range" && (
+          <div className="gc-input__range-num">
+            <span className="gc-input__range-num--left">{this.props.min}</span>
+            <span className="gc-input__range-num--right">{this.props.max}</span>
+          </div>
+        )*/}
         <input
           disabled={this.props.disabled}
           name={this.props.name}
@@ -171,7 +183,10 @@ GCInput.defaultProps = {
   minDate: null,
   max: null,
   min: null,
-  defaultValue: null
+  defaultValue: null,
+  sayHello: () => {
+    console.log('hello');
+  }
 };
 
 export default GCInput;

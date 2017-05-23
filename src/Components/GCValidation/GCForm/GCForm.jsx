@@ -13,8 +13,13 @@ class GCForm extends Component {
 
   getInputData(children) {
     const inputArr = children.filter((child) => {
-      const isInput = child.type.name === 'GCInput';
-      return isInput;
+      const isInput = child.type.name === 'GCInput' && child.props.hasOwnProperty('sayHello');
+      if (isInput) {
+        child.props.sayHello();
+        return isInput;
+      } else {
+        return false;
+      }
     });
     console.log(inputArr);
   }

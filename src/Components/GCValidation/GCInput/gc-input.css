@@ -14,3 +14,19 @@
   background-color: #f59393;
   color: white;
 }
+
+/*.gc-input__range-num::after {
+  clear: both;
+  display: table;
+  content:"";
+  padding: 0;
+  margin: 0;
+}*/
+/*
+.gc-input__range-num--left {
+  float: left;
+}
+
+.gc-input__range-num--right {
+  float: right:
+}*/

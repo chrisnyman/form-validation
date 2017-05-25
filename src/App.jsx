@@ -10,22 +10,6 @@ import mainLogo from './images/logo.png';
 
 class App extends Component {
   render() {
-      // GCForm checks that all the required fields are filled in and that validation has passed on all the fields
-
-      // GCInput validates the input fields contents (requires a ref)
-
-      // GCFormContents = [
-      //   {
-      //     label: "name",
-      //     value: this.state.name,
-      //     required: false
-      //   }, {
-      //     label: "email",
-      //     value: this.state.email,
-      //     required: true
-      //   }
-      // ];
-
     return (
       <div className="App">
         <div className="App-header">

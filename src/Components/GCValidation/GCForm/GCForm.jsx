@@ -7,21 +7,18 @@ class GCForm extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    console.log('Form submitted');
-    this.getInputData(this.props.children);
+    const shouldSubmit = this.testInput(this.props.children);
   }
 
-  getInputData(children) {
-    const inputArr = children.filter((child) => {
-      const isInput = child.type.name === 'GCInput' && child.props.hasOwnProperty('sayHello');
-      if (isInput) {
-        child.props.sayHello();
-        return isInput;
-      } else {
-        return false;
+  testInput(children) {
+    let isValid = 0;
+    React.Children.forEach(children, (child) => {
+      const isGCInput = child.type.name === 'GCInput';
+      if (isGCInput) {
+        isValid = isValid && child.type.validateInput(child.props);
       }
     });
-    console.log(inputArr);
+    return isValid !== 0;
   }
 
   render() {

@@ -14,15 +14,13 @@ class GCInput extends Component {
       type: 'text',
       isValid: undefined,
       errorMessage: '',
-
     };
+    // this.props.sayHello = this.props.sayHello.bind(this)
   }
 
   componentWillMount() {
     this.determineType(this.props.type);
   }
-
-
 
   determineType(type) {
     let foo;
@@ -86,16 +84,16 @@ class GCInput extends Component {
   }
 
   // type string, email, numbers, address, date, date-range
-  validateInput(type) {
+  static validateInput({ type, value }) {
     let valid;
 
-    if (this.state.value) {
+    if (value) {
       switch (type) {
         case 'email':
-          valid = this.validateEmail();
+          valid = GCInput.validateEmail(value);
           break;
         case 'password':
-          valid = this.validatePassword();
+          valid = GCInput.validatePassword();
           break;
         case 'name':
           valid = this.validateName();
@@ -110,8 +108,11 @@ class GCInput extends Component {
           valid = true;
           break;
       }
+
+      return valid;
     }
 
+    return valid;
     this.setState({ isValid: valid });
   }
 
@@ -128,12 +129,6 @@ class GCInput extends Component {
   render() {
     return (
       <div className={`gc-input ${!this.state.isValid && 'gc-input--invalid'} ${this.props.extendedClass}`}>
-        { /*this.props.type === "range" && (
-          <div className="gc-input__range-num">
-            <span className="gc-input__range-num--left">{this.props.min}</span>
-            <span className="gc-input__range-num--right">{this.props.max}</span>
-          </div>
-        )*/}
         <input
           disabled={this.props.disabled}
           name={this.props.name}
@@ -168,7 +163,9 @@ GCInput.propTypes = {
   minDate: PropTypes.string,
   max: PropTypes.string,
   min: PropTypes.string,
-  defaultValue: PropTypes.string
+  defaultValue: PropTypes.string,
+  // touchedByParent: PropTypes.boolean,
+  sayHello: PropTypes.func,
 };
 
 GCInput.defaultProps = {
@@ -184,9 +181,12 @@ GCInput.defaultProps = {
   max: null,
   min: null,
   defaultValue: null,
+  // touchedByParent: false,
   sayHello: () => {
-    console.log('hello');
+    this.validateInput(this.props.type);
+    console.log(this.state.isvalid);
   }
 };
+
 
 export default GCInput;

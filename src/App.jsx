@@ -9,6 +9,24 @@ import logo from './logo.svg';
 import mainLogo from './images/logo.png';
 
 class App extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      value: '',
+      name: '',
+      email: '',
+      password: '',
+      date: '',
+      range: ''
+    };
+  }
+
+  handleChange(value, type) {
+    const obj = {};
+    obj[type] = value;
+    this.setState(obj);
+  }
+
   render() {
     return (
       <div className="App">
@@ -34,6 +52,8 @@ class App extends Component {
               className="gc-form__label"
             >Name</label>
             <GCInput
+              onChange={(val) => this.handleChange(val, 'name')}
+              value={this.state.name}
               ref={(input) => { this.input = input; }}
               name="nameTxt"
               placeholder="Please enter your name"
@@ -48,6 +68,8 @@ class App extends Component {
               className="gc-form__label"
             >Email</label>
             <GCInput
+              onChange={(val) => this.handleChange(val, 'email')}
+              value={this.state.email}
               name="emailTxt"
               placeholder="name@domain.com"
               type="email"
@@ -60,6 +82,8 @@ class App extends Component {
               className="gc-form__label"
             >Password</label>
             <GCInput
+              onChange={(val) => this.handleChange(val, 'password')}
+              value={this.state.password}
               name="passwordTxt"
               type="password"
               valid
@@ -71,6 +95,8 @@ class App extends Component {
               className="gc-form__label"
             >Date</label>
             <GCInput
+              onChange={(val) => this.handleChange(val, 'date')}
+              value={this.state.date}
               name="dateTxt"
               type="date"
               maxDate="2017-07-23"
@@ -83,6 +109,8 @@ class App extends Component {
               className="gc-form__label"
             >Date</label>
             <GCInput
+              onChange={(val) => this.handleChange(val, 'range')}
+              value={this.state.range}
               name="rangeTxt"
               type="range"
               max="20"

@@ -16,9 +16,10 @@ class GCForm extends Component {
       const isGCInput = child.type.name === 'GCInput';
       if (isGCInput) {
         isValid = isValid && child.type.validateInput(child.props);
+        console.log(child.props.value);
       }
     });
-    return isValid !== 0;
+    // return isValid !== 0;
   }
 
   render() {

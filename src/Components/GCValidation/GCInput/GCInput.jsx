@@ -56,7 +56,9 @@ class GCInput extends Component {
   static validateName(value) {
     const pattern = new RegExp(/\d/);
     const valid = !pattern.test(value);
-    if (this.state.value > this.props.minLength && value < this.props.maxLength) {
+    console.log(this.props);
+    console.log(`${this.props.minLength}, ${this.props.maxLength}`);
+    if (value > this.props.minLength && value < this.props.maxLength) {
       console.log('Right length');
     }
     return valid;
@@ -82,9 +84,8 @@ class GCInput extends Component {
   }
 
   // type string, email, numbers, address, date, date-range
-  static validateInput({ type, value }) {
+  static validateInput(type, value) {
     let valid;
-
     if (value) {
       switch (type) {
         case 'email':
@@ -110,8 +111,9 @@ class GCInput extends Component {
       return valid;
     }
 
-    return valid;
+
     this.setState({ isValid: valid });
+    return valid;
   }
 
   handleErrorMessage(v, msg) {
@@ -133,7 +135,7 @@ class GCInput extends Component {
           type={this.state.type}
           value={this.props.value}
           placeholder={this.props.placeholder}
-          onBlur={GCInput.validateInput(this.props.type, this.props.value)}
+          onBlur={() => GCInput.validateInput(this.props.type, this.props.value)}
           onChange={e => this.handleChange(e.target.value)}
           min={this.props.min}
           max={this.props.max}
@@ -150,9 +152,9 @@ class GCInput extends Component {
 
 GCInput.propTypes = {
   extendedClass: PropTypes.string,
-  initialValue: PropTypes.string,
+  value: PropTypes.string,
   type: PropTypes.string.isRequired,
-  disabled: PropTypes.boolean,
+  disabled: PropTypes.bool,
   name: PropTypes.string,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
@@ -162,13 +164,13 @@ GCInput.propTypes = {
   max: PropTypes.string,
   min: PropTypes.string,
   defaultValue: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
   // touchedByParent: PropTypes.boolean,
-  // sayHello: PropTypes.func,
 };
 
 GCInput.defaultProps = {
   extendedClass: '',
-  initialValue: '',
+  value: '',
   disabled: false,
   name: '',
   placeholder: '',
@@ -179,12 +181,6 @@ GCInput.defaultProps = {
   max: null,
   min: null,
   defaultValue: null,
-  // touchedByParent: false,
-  // sayHello: () => {
-  //   this.validateInput(this.props.type);
-  //   console.log(this.state.isvalid);
-  // }
 };
-
 
 export default GCInput;

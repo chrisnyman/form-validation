@@ -91,20 +91,6 @@ class GCInput extends Component {
     return false;
   }
 
-  static validateRange(value, instance) {
-    const min = instance.props.min;
-    const max = instance.props.max;
-
-    if (min <= value && max >= value) {
-      return true;
-    }
-
-    instance.setState({ errorMessage: `Please make a selection between ${min} and ${max}` });
-
-    return false;
-  }
-
-  // type string, email, numbers, address, date, date-range
   static validateInput(instance) {
     let valid;
     if (instance.props.value) {
@@ -123,8 +109,6 @@ class GCInput extends Component {
           valid = GCInput.validateDate(instance.props.value, instance);
           break;
         case 'range':
-          valid = GCInput.validateRange(instance.props.value, instance);
-          break;
         default:
           valid = true;
           break;
@@ -154,7 +138,7 @@ class GCInput extends Component {
   }
 
   render() {
-    const self = this;
+    const instance = this;
     return (
       <div className={`gc-input ${!this.state.isValid && 'gc-input--invalid'} ${this.props.extendedClass}`}>
         <input
@@ -163,14 +147,14 @@ class GCInput extends Component {
           type={this.state.type}
           value={this.props.value}
           placeholder={this.props.placeholder}
-          onBlur={() => GCInput.validateInput(self)}
+          onBlur={() => GCInput.validateInput(instance)}
           onChange={e => this.handleChange(e.target.value)}
           min={this.props.min}
           max={this.props.max}
         />
 
-        {self.state.isValid === false && (
-          <p className="gc-input__error-msg">{self.state.errorMessage}</p>
+        {instance.state.isValid === false && (
+          <p className="gc-input__error-msg">{instance.state.errorMessage}</p>
         )}
       </div>
     );

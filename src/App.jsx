@@ -17,7 +17,8 @@ class App extends Component {
       email: '',
       password: '',
       date: '',
-      range: ''
+      range: '',
+      text: '',
     };
   }
 
@@ -59,7 +60,6 @@ class App extends Component {
               placeholder="Please enter your name"
               type="name"
               required
-              valid
               touchedByParent="false"
             />
 
@@ -73,7 +73,20 @@ class App extends Component {
               name="emailTxt"
               placeholder="name@domain.com"
               type="email"
-              valid
+              touchedByParent="false"
+            />
+
+            <label
+              htmlFor="nameTxt"
+              className="gc-form__label"
+            >Custom Regular Expression</label>
+            <GCInput
+              onChange={(val) => this.handleChange(val, 'text')}
+              value={this.state.text}
+              name="nameTxt"
+              placeholder="Type something that starts with a 'W'."
+              customRegex={/\bW/g}
+              type="text"
               touchedByParent="false"
             />
 
@@ -86,7 +99,6 @@ class App extends Component {
               value={this.state.password}
               name="passwordTxt"
               type="password"
-              valid
               touchedByParent="false"
             />
 
@@ -100,7 +112,6 @@ class App extends Component {
               name="dateTxt"
               type="date"
               maxDate="2017-07-23"
-              valid
               touchedByParent="false"
             />
 
@@ -116,7 +127,6 @@ class App extends Component {
               max="20"
               min="4"
               defaultValue="9"
-              valid
               touchedByParent="false"
             />
 

@@ -19,10 +19,17 @@ class GCInput extends Component {
     this.determineType(this.props.type);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.value !== this.props.value || nextState.isValid !== this.state.isValid;
+  }
+
   determineType(type) {
     let foo;
     switch (type) {
       case 'name':
+        foo = 'text';
+        break;
+      case 'text':
         foo = 'text';
         break;
       case 'email':
@@ -45,24 +52,29 @@ class GCInput extends Component {
   }
 
   static validateEmail(value, self) {
-    const pattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    const pattern = self.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     const valid = pattern.test(value);
     self.handleErrorMessage(valid, 'The email address you have entered is not valid');
     return valid;
   }
 
   static validateName(value, self) {
-    const pattern = new RegExp(/\d/);
-    const valid = !pattern.test(value);
-    if (value > self.props.minLength && value < self.props.maxLength) {
-      console.log('Right length');
+    const pattern = self.handleRegExp(/\d/);
+    let valid;
+    if (value.length > self.props.minLength && value.length < self.props.maxLength) {
+      valid = pattern.test(value);
+      if (!self.props.customRegex) {
+        valid = !valid;
+      }
+    } else {
+      valid = false;
+      self.handleErrorMessage(valid, 'not right length');
     }
     return valid;
   }
 
   static validatePassword(value, self) {
     const valid = value.length < self.props.minLength;
-    console.log(valid);
     self.handleErrorMessage(valid, 'Password needs to have more than 8 characters');
     return valid;
   }
@@ -75,7 +87,7 @@ class GCInput extends Component {
     if (min <= selectedDate && max >= selectedDate) {
       return true;
     }
-    self.setState({errorMessage: `Please select a date between ${min.toDateString()} and ${max.toDateString()}` });
+    self.setState({ errorMessage: `Please select a date between ${min.toDateString()} and ${max.toDateString()}` });
 
     return false;
   }
@@ -92,6 +104,7 @@ class GCInput extends Component {
           valid = GCInput.validatePassword(self.props.value, self);
           break;
         case 'name':
+        case 'text':
           valid = GCInput.validateName(self.props.value, self);
           break;
         case 'date':
@@ -105,10 +118,9 @@ class GCInput extends Component {
           break;
       }
 
-      self.setState({isValid: valid})
       return valid;
     }
-
+    self.setState({isValid: valid})
     return valid;
   }
 
@@ -124,6 +136,13 @@ class GCInput extends Component {
 
   handleChange(value) {
     this.props.onChange(value);
+  }
+
+  handleRegExp(regX) {
+    if (this.props.customRegex) {
+      return new RegExp(this.props.customRegex);
+    }
+    return new RegExp(regX);
   }
 
   render() {
@@ -164,7 +183,7 @@ GCInput.propTypes = {
   max: PropTypes.string,
   min: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  customRegex: PropTypes.string,
+  customRegex: PropTypes.any,
   // touchedByParent: PropTypes.boolean,
 };
 

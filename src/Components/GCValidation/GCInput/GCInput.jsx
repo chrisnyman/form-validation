@@ -106,16 +106,16 @@ class GCInput extends Component {
           break;
       }
 
+      self.setState({isValid: valid})
       return valid;
     }
 
-    self.handleValidity(valid);
     return valid;
   }
 
-  handleValidity(v) {
-    this.setState({ isValid: v });
-  }
+  // handleValidity(v) {
+  //   this.setState({ isValid: v });
+  // }
 
   handleErrorMessage(v, msg) {
     if (!v) {
@@ -141,10 +141,9 @@ class GCInput extends Component {
           onChange={e => this.handleChange(e.target.value)}
           min={this.props.min}
           max={this.props.max}
-          defaultValue={this.props.defaultValue}
         />
 
-        {this.state.isValid === false && (
+        {self.state.isValid === false && (
           <p className="gc-input__error-msg">{errorMessage}</p>
         )}
       </div>
@@ -165,8 +164,8 @@ GCInput.propTypes = {
   minDate: PropTypes.string,
   max: PropTypes.string,
   min: PropTypes.string,
-  defaultValue: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  customRegex: PropTypes.string,
   // touchedByParent: PropTypes.boolean,
 };
 
@@ -182,7 +181,7 @@ GCInput.defaultProps = {
   minDate: null,
   max: null,
   min: null,
-  defaultValue: null,
+  customRegex: null,
 };
 
 export default GCInput;

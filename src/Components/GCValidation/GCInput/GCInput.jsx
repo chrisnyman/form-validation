@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import './gc-input.css';
 
-let errorMessage;
-
 class GCInput extends Component {
   constructor(props, context) {
     super(props, context);
@@ -56,27 +54,28 @@ class GCInput extends Component {
   static validateName(value, self) {
     const pattern = new RegExp(/\d/);
     const valid = !pattern.test(value);
-    // if (value > self.props.minLength && value < self.props.maxLength) {
-    //   console.log('Right length');
-    // }
+    if (value > self.props.minLength && value < self.props.maxLength) {
+      console.log('Right length');
+    }
     return valid;
   }
 
-  static validatePassword(value) {
-    const valid = value.length > this.props.minLength;
-    this.handleErrorMessage(valid, 'Password needs to have more than 8 characters');
+  static validatePassword(value, self) {
+    const valid = value.length < self.props.minLength;
+    console.log(valid);
+    self.handleErrorMessage(valid, 'Password needs to have more than 8 characters');
     return valid;
   }
 
-  static validateDate(value) {
-    const min = new Date(this.props.minDate);
-    const max = new Date(this.props.maxDate);
-    const selectedDate = new Date(this.props.value);
+  static validateDate(value, self) {
+    const min = new Date(self.props.minDate);
+    const max = new Date(self.props.maxDate);
+    const selectedDate = new Date(value);
 
     if (min <= selectedDate && max >= selectedDate) {
       return true;
     }
-    errorMessage = `Please select a date between ${min.toDateString()} and ${max.toDateString()}`;
+    self.setState({errorMessage: `Please select a date between ${min.toDateString()} and ${max.toDateString()}` });
 
     return false;
   }
@@ -119,7 +118,7 @@ class GCInput extends Component {
 
   handleErrorMessage(v, msg) {
     if (!v) {
-      errorMessage = `${msg}`;
+      this.setState({ errorMessage: `${msg}` });
     }
   }
 
@@ -144,7 +143,7 @@ class GCInput extends Component {
         />
 
         {self.state.isValid === false && (
-          <p className="gc-input__error-msg">{errorMessage}</p>
+          <p className="gc-input__error-msg">{self.state.errorMessage}</p>
         )}
       </div>
     );

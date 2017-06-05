@@ -86,6 +86,7 @@ class App extends Component {
               name="nameTxt"
               placeholder="Type something that starts with a 'W'."
               customRegex={/\bW/g}
+              customErrorMessage="Must start with uppercase W"
               type="text"
               touchedByParent="false"
             />

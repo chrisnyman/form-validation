@@ -8,8 +8,6 @@ class GCInput extends Component {
     super(props, context);
     this.state = {
       type: 'text',
-      isValid: undefined,
-      errorMessage: '',
     };
   }
 
@@ -18,7 +16,7 @@ class GCInput extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.value !== this.props.value || nextState.isValid !== this.state.isValid;
+    return nextProps.value !== this.props.value;
   }
 
   determineType(type) {
@@ -49,90 +47,89 @@ class GCInput extends Component {
     this.setState({ type: foo });
   }
 
-  static validateEmail(value, instance) {
-    const pattern = instance.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  static validateEmail(value, props) {
+    const pattern = GCInput.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, props);
     const valid = pattern.test(value);
-    instance.handleErrorMessage(valid, 'The email address you have entered is not valid');
-    return valid;
+    return GCInput.handleErrorMessage(valid, props, 'The email address you have entered is not valid');
   }
 
-  static validateName(value, instance) {
-    const pattern = instance.handleRegExp(/\d/);
+  static validateName(value, props) {
+    const pattern = GCInput.handleRegExp(/\d/, props);
     let valid;
-    if (value.length > instance.props.minLength && value.length < instance.props.maxLength) {
+    if (value.length > props.minLength && value.length < props.maxLength) {
       valid = pattern.test(value);
-      if (!instance.props.customRegex) {
+      if (!props.customRegex) {
         valid = !valid;
       }
-      instance.handleErrorMessage(valid);
+      return GCInput.handleErrorMessage(valid, props);
     } else {
-      valid = false;
-      instance.handleErrorMessage(valid, 'Not right length');
+      return GCInput.handleErrorMessage(valid, props, 'Not right length');
     }
-    return valid;
   }
 
-  static validatePassword(value, instance) {
-    const valid = value.length < instance.props.minLength;
-    instance.handleErrorMessage(valid, 'Password needs to have more than 8 characters');
-    return valid;
+  static validatePassword(value, props) {
+    if (value.length < props.minLength) {
+      return `Password needs to have more than ${props.minLength} characters`;
+    } else {
+      return null;
+    }
   }
 
-  static validateDate(value, instance) {
-    const min = new Date(instance.props.minDate);
-    const max = new Date(instance.props.maxDate);
+  static validateDate(value, props) {
+    const min = new Date(props.minDate);
+    const max = new Date(props.maxDate);
     const selectedDate = new Date(value);
-
-    if (min <= selectedDate && max >= selectedDate) {
-      return true;
+    console.log(max);
+    if (min >= selectedDate && max <= selectedDate) {
+      console.log('failed');
+      return `Please select a date between ${min.toDateString()} and ${max.toDateString()}`;
     }
-    instance.setState({ errorMessage: `Please select a date between ${min.toDateString()} and ${max.toDateString()}` });
-
-    return false;
   }
 
-  static validateInput(instance) {
-    let valid;
-    if (instance.props.value) {
-      switch (instance.props.type) {
+  static validateInput(props) {
+    let error = null;
+    // console.log("validateInput");
+    if (props.value) {
+      switch (props.type) {
         case 'email':
-          valid = GCInput.validateEmail(instance.props.value, instance);
+          error = GCInput.validateEmail(props.value, props);
           break;
         case 'password':
-          valid = GCInput.validatePassword(instance.props.value, instance);
+          error = GCInput.validatePassword(props.value, props);
           break;
         case 'name':
         case 'text':
-          valid = GCInput.validateName(instance.props.value, instance);
+          error = GCInput.validateName(props.value, props);
           break;
         case 'date':
-          valid = GCInput.validateDate(instance.props.value, instance);
+          error = GCInput.validateDate(props.value, props);
           break;
         case 'range':
         default:
-          valid = true;
+          error = null;
           break;
       }
-      instance.setState({ isValid: valid });
-      return valid;
+    } else if (props.required) {
+      error = 'This field is required';
     }
-    instance.setState({ isValid: undefined });
-    return valid;
+    return error;
   }
 
-  handleErrorMessage(v, msg = 'Invalid Input') {
+  static handleErrorMessage(v, props, msg = 'Invalid Input') {
     if (!v) {
-      this.setState({ errorMessage: this.props.customErrorMessage || msg });
+      return props.customErrorMessage || msg;
+    } else {
+      return null;
     }
   }
 
-  handleChange(value) {
-    this.props.onChange(value);
+  handleChange(e) {
+    this.props.onChange(e.target.value);
   }
 
-  handleRegExp(regX) {
-    if (this.props.customRegex) {
-      return new RegExp(this.props.customRegex);
+  static handleRegExp(regX, props) {
+    if (props.customRegex) {
+      return new RegExp(props.customRegex);
     }
     return new RegExp(regX);
   }
@@ -148,13 +145,13 @@ class GCInput extends Component {
           value={this.props.value}
           placeholder={this.props.placeholder}
           onBlur={() => GCInput.validateInput(instance)}
-          onChange={e => this.handleChange(e.target.value)}
+          onChange={e => this.handleChange(e)}
           min={this.props.min}
           max={this.props.max}
         />
 
-        {instance.state.isValid === false && (
-          <p className="gc-input__error-msg">{instance.state.errorMessage}</p>
+      {GCInput.validateInput(this.props) && (
+          <p className="gc-input__error-msg">{GCInput.validateInput(this.props)}</p>
         )}
       </div>
     );

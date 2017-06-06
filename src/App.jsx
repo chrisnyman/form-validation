@@ -87,6 +87,7 @@ class App extends Component {
               value={this.state.password}
               name="passwordTxt"
               type="password"
+              minLength={8}
               touchedByParent="false"
             />
 

@@ -47,7 +47,6 @@ class App extends Component {
               placeholder="Please enter your name"
               type="name"
               required
-              touchedByParent="false"
             />
 
             <label
@@ -60,7 +59,6 @@ class App extends Component {
               name="emailTxt"
               placeholder="name@domain.com"
               type="email"
-              touchedByParent="false"
             />
 
             <label
@@ -75,7 +73,6 @@ class App extends Component {
               customRegex={/\bW/g}
               customErrorMessage="Must start with uppercase W"
               type="text"
-              touchedByParent="false"
             />
 
             <label
@@ -88,7 +85,6 @@ class App extends Component {
               name="passwordTxt"
               type="password"
               minLength={8}
-              touchedByParent="false"
             />
 
             <label
@@ -101,7 +97,6 @@ class App extends Component {
               name="dateTxt"
               type="date"
               maxDate="2017-07-23"
-              touchedByParent="false"
             />
 
             <label
@@ -116,7 +111,6 @@ class App extends Component {
               max="20"
               min="4"
               defaultValue="9"
-              touchedByParent="false"
             />
 
             <button className="gc-form__submit-btn">Submit</button>

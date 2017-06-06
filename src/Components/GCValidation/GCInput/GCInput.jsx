@@ -8,6 +8,7 @@ class GCInput extends Component {
     super(props, context);
     this.state = {
       type: 'text',
+      isValid: true,
     };
   }
 
@@ -16,7 +17,7 @@ class GCInput extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.value !== this.props.value;
+    return nextProps.value !== this.props.value || nextState.isValid !== this.state.isValid;
   }
 
   determineType(type) {
@@ -86,9 +87,9 @@ class GCInput extends Component {
     }
   }
 
-  static validateInput(props) {
+  static validateInput(props, isTouched = false, instance = null) {
     let error = null;
-    // console.log("validateInput");
+
     if (props.value) {
       switch (props.type) {
         case 'email':
@@ -112,15 +113,20 @@ class GCInput extends Component {
     } else if (props.required) {
       error = 'This field is required';
     }
+
+    if (!isTouched && instance) {
+      instance.setState({ isValid: error == null });
+    } else if (isTouched) {
+      console.log('Touched');
+    }
     return error;
   }
 
   static handleErrorMessage(v, props, msg = 'Invalid Input') {
     if (!v) {
       return props.customErrorMessage || msg;
-    } else {
-      return null;
     }
+    return null;
   }
 
   handleChange(e) {
@@ -144,14 +150,14 @@ class GCInput extends Component {
           type={this.state.type}
           value={this.props.value}
           placeholder={this.props.placeholder}
-          onBlur={() => GCInput.validateInput(instance)}
+          onBlur={() => GCInput.validateInput(instance.props, false, instance)}
           onChange={e => this.handleChange(e)}
           min={this.props.min}
           max={this.props.max}
         />
-
-      {GCInput.validateInput(this.props) && (
-          <p className="gc-input__error-msg">{GCInput.validateInput(this.props)}</p>
+        {!instance.state.isValid && GCInput.validateInput(this.props) && (
+          <p className="gc-input__error-msg">
+            {GCInput.validateInput(this.props)}</p>
         )}
       </div>
     );
@@ -174,7 +180,7 @@ GCInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   customRegex: PropTypes.object,
   customErrorMessage: PropTypes.string,
-  // touchedByParent: PropTypes.boolean,
+  touchedByParent: PropTypes.func,
 };
 
 GCInput.defaultProps = {
@@ -191,6 +197,9 @@ GCInput.defaultProps = {
   min: null,
   customRegex: null,
   customErrorMessage: null,
+  touchedByParent: function(val = false) {
+    return val;
+  }
 };
 
 export default GCInput;

@@ -70,7 +70,7 @@ class GCInput extends Component {
 
   static validatePassword(value, props) {
     const min = props.minLength !== 0 ? props.minLength : 8;
-    return GCInput.handleErrorMessage(value.length < min, props, `Password needs to have more than ${min} characters`);
+    return GCInput.handleErrorMessage(value.length > min, props, `Password needs to have more than ${min} characters`);
   }
 
   static validateDate(value, props) {

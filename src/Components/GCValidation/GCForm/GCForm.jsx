@@ -14,7 +14,7 @@ class GCForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     this.setState({submitPressed: true});
-    const shouldSubmit = this.testInput(children);
+    const shouldSubmit = this.testInput(this.getChildren());
     if (shouldSubmit) {
       this.props.onSubmit();
     }
@@ -31,7 +31,7 @@ class GCForm extends Component {
         }
       }
     });
-    return isValid > 0;
+    return isValid === 0;
   }
 
   getChildren() {
@@ -58,6 +58,7 @@ class GCForm extends Component {
 
 GCForm.propTypes = {
   children: PropTypes.node.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default GCForm;

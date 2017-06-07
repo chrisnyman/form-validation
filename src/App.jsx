@@ -25,6 +25,10 @@ class App extends Component {
     this.setState(obj);
   }
 
+  handleSubmit() {
+    console.log('submitted');
+  }
+
   render() {
     return (
       <div className="App">
@@ -33,7 +37,7 @@ class App extends Component {
         </h1>
 
         <div>
-          <GCForm>
+          <GCForm onSubmit={() => this.handleSubmit()}>
             <label
               htmlFor="nameTxt"
               className="gc-form__label"

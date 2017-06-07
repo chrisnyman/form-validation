@@ -41,6 +41,9 @@ class GCInput extends Component {
       case 'range':
         foo = 'range';
         break;
+      case 'number':
+        foo = 'number';
+        break;
       default:
         foo = 'text';
         break;
@@ -80,6 +83,16 @@ class GCInput extends Component {
     return GCInput.handleErrorMessage(min >= selectedDate && max <= selectedDate, props, `Please select a date between ${min.toDateString()} and ${max.toDateString()}`);
   }
 
+  static validateNumber(value, props) {
+    const min = props.min;
+    const max = props.max;
+    if (min > value) {
+      return GCInput.handleErrorMessage(false, props, `Number must be higher than ${min}.`);
+    } else if (max < value) {
+      return GCInput.handleErrorMessage(false, props, `Number must be lower than ${max}`);
+    }
+  }
+
   static validateInput(props) {
     let error = null;
     if (props.value) {
@@ -96,6 +109,9 @@ class GCInput extends Component {
           break;
         case 'date':
           error = GCInput.validateDate(props.value, props);
+          break;
+        case 'number':
+          error = GCInput.validateNumber(props.value, props);
           break;
         case 'range':
         default:
@@ -168,8 +184,8 @@ GCInput.propTypes = {
   minLength: PropTypes.number,
   maxDate: PropTypes.string,
   minDate: PropTypes.string,
-  max: PropTypes.string,
-  min: PropTypes.string,
+  max: PropTypes.number,
+  min: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   customRegex: PropTypes.object,
   customErrorMessage: PropTypes.string,

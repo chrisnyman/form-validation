@@ -16,6 +16,7 @@ class App extends Component {
       date: '',
       range: '',
       text: '',
+      number: '',
     };
   }
 
@@ -62,6 +63,20 @@ class App extends Component {
               name="emailTxt"
               placeholder="name@domain.com"
               type="email"
+            />
+
+            <label
+              htmlFor="numTxt"
+              className="gc-form__label"
+            >Number</label>
+
+            <GCInput
+              onChange={val => this.handleChange(val, 'number')}
+              value={this.state.number}
+              name="numTxt"
+              type="number"
+              min={5}
+              max={10}
             />
 
             <label
@@ -114,8 +129,8 @@ class App extends Component {
               value={this.state.range}
               name="rangeTxt"
               type="range"
-              max="20"
-              min="4"
+              max={20}
+              min={4}
               defaultValue="9"
             />
 

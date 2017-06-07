@@ -82,7 +82,6 @@ class GCInput extends Component {
 
   static validateInput(props) {
     let error = null;
-
     if (props.value) {
       switch (props.type) {
         case 'email':
@@ -125,7 +124,7 @@ class GCInput extends Component {
   }
 
   showValidationError() {
-    return (this.state.isValid && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
+    return (this.state.hasBeenBlurred && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
   }
 
   handleChange(e) {

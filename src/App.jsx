@@ -34,7 +34,6 @@ class App extends Component {
 
         <div>
           <GCForm>
-
             <label
               htmlFor="nameTxt"
               className="gc-form__label"
@@ -87,6 +86,7 @@ class App extends Component {
               minLength={8}
             />
 
+          <div>
             <label
               htmlFor="dateTxt"
               className="gc-form__label"
@@ -98,6 +98,8 @@ class App extends Component {
               type="date"
               maxDate="2017-07-23"
             />
+          </div>
+
 
             <label
               htmlFor="rangeTxt"

@@ -8,7 +8,7 @@ class GCInput extends Component {
     super(props, context);
     this.state = {
       type: 'text',
-      isValid: true,
+      hasBeenBlurred: false,
     };
   }
 
@@ -17,7 +17,7 @@ class GCInput extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.value !== this.props.value || nextState.isValid !== this.state.isValid;
+    return nextProps.value !== this.props.value || nextProps.submitPressed !== this.props.submitPressed || nextState.hasBeenBlurred !== this.state.hasBeenBlurred;
   }
 
   determineType(type) {
@@ -87,7 +87,7 @@ class GCInput extends Component {
     }
   }
 
-  static validateInput(props, isTouched = false, instance = null) {
+  static validateInput(props) {
     let error = null;
 
     if (props.value) {
@@ -114,11 +114,6 @@ class GCInput extends Component {
       error = 'This field is required';
     }
 
-    if (!isTouched && instance) {
-      instance.setState({ isValid: error == null });
-    } else if (isTouched) {
-      console.log('Touched');
-    }
     return error;
   }
 
@@ -130,7 +125,8 @@ class GCInput extends Component {
   }
 
   handleChange(e) {
-    this.props.onChange(e.target.value);
+    const isValid = GCInput.validateInput(this.props) === null;
+    this.props.onChange(e.target.value, isValid);
   }
 
   static handleRegExp(regX, props) {
@@ -140,8 +136,12 @@ class GCInput extends Component {
     return new RegExp(regX);
   }
 
+  showValidationError() {
+    return (this.state.isValid && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
+  }
+
   render() {
-    const instance = this;
+    // const instance = this;
     return (
       <div className={`gc-input ${!this.state.isValid && 'gc-input--invalid'} ${this.props.extendedClass}`}>
         <input
@@ -150,12 +150,13 @@ class GCInput extends Component {
           type={this.state.type}
           value={this.props.value}
           placeholder={this.props.placeholder}
-          onBlur={() => GCInput.validateInput(instance.props, false, instance)}
+          onBlur={() => this.setState({ hasBeenBlurred: true })}
           onChange={e => this.handleChange(e)}
           min={this.props.min}
           max={this.props.max}
         />
-        {!instance.state.isValid && GCInput.validateInput(this.props) && (
+
+        {this.showValidationError() && (
           <p className="gc-input__error-msg">
             {GCInput.validateInput(this.props)}</p>
         )}
@@ -181,6 +182,7 @@ GCInput.propTypes = {
   customRegex: PropTypes.object,
   customErrorMessage: PropTypes.string,
   touchedByParent: PropTypes.func,
+  submitPressed: PropTypes.bool,
 };
 
 GCInput.defaultProps = {
@@ -197,9 +199,7 @@ GCInput.defaultProps = {
   min: null,
   customRegex: null,
   customErrorMessage: null,
-  touchedByParent: function(val = false) {
-    return val;
-  }
+  submitPressed: false,
 };
 
 export default GCInput;

@@ -69,22 +69,15 @@ class GCInput extends Component {
   }
 
   static validatePassword(value, props) {
-    if (value.length < props.minLength) {
-      return `Password needs to have more than ${props.minLength} characters`;
-    } else {
-      return null;
-    }
+    const min = props.minLength !== 0 ? props.minLength : 8;
+    return GCInput.handleErrorMessage(value.length < min, props, `Password needs to have more than ${min} characters`);
   }
 
   static validateDate(value, props) {
     const min = new Date(props.minDate);
     const max = new Date(props.maxDate);
     const selectedDate = new Date(value);
-    console.log(max);
-    if (min >= selectedDate && max <= selectedDate) {
-      console.log('failed');
-      return `Please select a date between ${min.toDateString()} and ${max.toDateString()}`;
-    }
+    return GCInput.handleErrorMessage(min >= selectedDate && max <= selectedDate, props, `Please select a date between ${min.toDateString()} and ${max.toDateString()}`);
   }
 
   static validateInput(props) {
@@ -124,11 +117,6 @@ class GCInput extends Component {
     return null;
   }
 
-  handleChange(e) {
-    const isValid = GCInput.validateInput(this.props) === null;
-    this.props.onChange(e.target.value, isValid);
-  }
-
   static handleRegExp(regX, props) {
     if (props.customRegex) {
       return new RegExp(props.customRegex);
@@ -138,6 +126,11 @@ class GCInput extends Component {
 
   showValidationError() {
     return (this.state.isValid && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
+  }
+
+  handleChange(e) {
+    const isValid = GCInput.validateInput(this.props) === null;
+    this.props.onChange(e.target.value, isValid);
   }
 
   render() {

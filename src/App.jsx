@@ -39,7 +39,7 @@ class App extends Component {
               className="gc-form__label"
             >Name</label>
             <GCInput
-              onChange={(val) => this.handleChange(val, 'name')}
+              onChange={val => this.handleChange(val, 'name')}
               value={this.state.name}
               ref={(input) => { this.input = input; }}
               name="nameTxt"
@@ -53,7 +53,7 @@ class App extends Component {
               className="gc-form__label"
             >Email</label>
             <GCInput
-              onChange={(val) => this.handleChange(val, 'email')}
+              onChange={val => this.handleChange(val, 'email')}
               value={this.state.email}
               name="emailTxt"
               placeholder="name@domain.com"
@@ -65,7 +65,7 @@ class App extends Component {
               className="gc-form__label"
             >Custom Regular Expression</label>
             <GCInput
-              onChange={(val) => this.handleChange(val, 'text')}
+              onChange={val => this.handleChange(val, 'text')}
               value={this.state.text}
               name="nameTxt"
               placeholder="Type something that starts with a 'W'."
@@ -79,7 +79,7 @@ class App extends Component {
               className="gc-form__label"
             >Password</label>
             <GCInput
-              onChange={(val) => this.handleChange(val, 'password')}
+              onChange={val => this.handleChange(val, 'password')}
               value={this.state.password}
               name="passwordTxt"
               type="password"
@@ -92,7 +92,7 @@ class App extends Component {
               className="gc-form__label"
             >Date</label>
             <GCInput
-              onChange={(val) => this.handleChange(val, 'date')}
+              onChange={val => this.handleChange(val, 'date')}
               value={this.state.date}
               name="dateTxt"
               type="date"
@@ -106,7 +106,7 @@ class App extends Component {
               className="gc-form__label"
             >Range</label>
             <GCInput
-              onChange={(val) => this.handleChange(val, 'range')}
+              onChange={val => this.handleChange(val, 'range')}
               value={this.state.range}
               name="rangeTxt"
               type="range"

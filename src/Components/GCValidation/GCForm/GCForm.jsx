@@ -13,10 +13,11 @@ class GCForm extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    this.setState({submitPressed: true}, () => {
-      const children = this.getChildren();
-      const shouldSubmit = this.testInput(children);
-    })
+    this.setState({submitPressed: true});
+    const shouldSubmit = this.testInput(children);
+    if (shouldSubmit) {
+      this.props.onSubmit();
+    }
   }
 
   testInput(children) {
@@ -24,11 +25,13 @@ class GCForm extends Component {
     React.Children.forEach(children, (child) => {
       const isGCInput = child.type.name === 'GCInput';
       if (isGCInput) {
-        isValid = isValid && child.type.validateInput(child.props);
-        console.log(child.type.validateInput(child.props));
+
+        if (child.type.validateInput(child.props) != null) {
+          isValid += 1;
+        }
       }
     });
-    return !!isValid;
+    return isValid > 0;
   }
 
   getChildren() {

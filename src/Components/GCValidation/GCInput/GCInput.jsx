@@ -21,34 +21,34 @@ class GCInput extends Component {
   }
 
   determineType(type) {
-    let foo;
+    let inputType;
     switch (type) {
       case 'name':
-        foo = 'text';
+        inputType = 'text';
         break;
       case 'text':
-        foo = 'text';
+        inputType = 'text';
         break;
       case 'email':
-        foo = 'email';
+        inputType = 'email';
         break;
       case 'password':
-        foo = 'password';
+        inputType = 'password';
         break;
       case 'date':
-        foo = 'date';
+        inputType = 'date';
         break;
       case 'range':
-        foo = 'range';
+        inputType = 'range';
         break;
       case 'number':
-        foo = 'number';
+        inputType = 'number';
         break;
       default:
-        foo = 'text';
+        inputType = 'text';
         break;
     }
-    this.setState({ type: foo });
+    this.setState({ type: inputType });
   }
 
   static validateEmail(value, props) {

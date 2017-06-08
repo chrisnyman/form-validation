@@ -14,13 +14,13 @@ class GCForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     this.setState({submitPressed: true});
-    const shouldSubmit = this.testInput(this.getChildren());
+    const shouldSubmit = this.validateInput(this.getChildren());
     if (shouldSubmit) {
       this.props.onSubmit();
     }
   }
 
-  testInput(children) {
+  validateInput(children) {
     let isValid = 0;
     React.Children.forEach(children, (child) => {
       const isGCInput = child.type.name === 'GCInput';

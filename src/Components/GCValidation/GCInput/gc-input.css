@@ -9,6 +9,11 @@
   border-color: #f59393;
 }
 
+.gc-input--disabled {
+  border-color: #dddddd;
+  background-color: #f4f4f4;
+}
+
 .gc-input__error-msg {
   padding: 0.625em;
   background-color: #f59393;

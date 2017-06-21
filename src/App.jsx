@@ -17,6 +17,7 @@ class App extends Component {
       range: '',
       text: '',
       number: '',
+      disabled: '',
     };
   }
 
@@ -119,7 +120,6 @@ class App extends Component {
             />
           </div>
 
-
             <label
               htmlFor="rangeTxt"
               className="gc-form__label"
@@ -132,6 +132,19 @@ class App extends Component {
               max={20}
               min={4}
               defaultValue="9"
+            />
+
+            <label
+              htmlFor="rangeTxt"
+              className="gc-form__label"
+            >Disabled</label>
+            <GCInput
+              onChange={val => this.handleChange(val, 'disabled')}
+              value={this.state.disabled}
+              name="disabledTxt"
+              placeholder="This input is disabled."
+              type="text"
+              disabled
             />
 
             <button className="gc-form__submit-btn">Submit</button>

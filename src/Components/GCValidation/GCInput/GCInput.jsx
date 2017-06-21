@@ -144,15 +144,19 @@ class GCInput extends Component {
   }
 
   handleChange(e) {
-    const isValid = GCInput.validateInput(this.props) === null;
-    this.props.onChange(e.target.value, isValid);
+    if (!this.props.disabled) {
+      const isValid = GCInput.validateInput(this.props) === null;
+      this.props.onChange(e.target.value, isValid);
+    }
   }
 
   render() {
-    // const instance = this;
+    const invalidClass = this.showValidationError() ? 'gc-input--invalid' : '';
+    const disabledClass = this.props.disabled ? 'gc-input--disabled' : '';
     return (
-      <div className={`gc-input ${!this.state.isValid && 'gc-input--invalid'} ${this.props.extendedClass}`}>
+      <div className={`gc-input ${this.props.extendedClass}`}>
         <input
+          className={`${invalidClass} ${disabledClass}`}
           disabled={this.props.disabled}
           name={this.props.name}
           type={this.state.type}

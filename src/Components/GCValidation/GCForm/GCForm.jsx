@@ -20,6 +20,16 @@ class GCForm extends Component {
     }
   }
 
+  getFields() {
+    return _.mapValues(this.props.fields, field =>
+      <Child
+        {...field}
+        onChange={this.props.handleInputChange}
+        touchedByParent={this.state.formSubmitted}
+      />
+    );
+  }
+
   validateInput(children) {
     let isValid = 0;
     React.Children.forEach(children, (child) => {

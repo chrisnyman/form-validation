@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import './gc-form.css';
 
@@ -7,67 +8,54 @@ class GCForm extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      submitPressed: false
+      formValid: false,
+      formSubmitted: false,
     }
   }
 
-  onSubmit(e) {
+  submitForm = (e) => {
     e.preventDefault();
-    this.setState({submitPressed: true});
-    const shouldSubmit = this.validateInput(this.getChildren());
-    if (shouldSubmit) {
-      this.props.onSubmit();
-    }
+    console.log('form submitted');
+    this.setState({ formSubmitted: true }, () => {
+      console.log(this.state);
+    });
   }
 
   getFields() {
     return _.mapValues(this.props.fields, field =>
-      <Child
+      (<Child
         {...field}
         onChange={this.props.handleInputChange}
         touchedByParent={this.state.formSubmitted}
-      />
-    );
+      />));
   }
 
-  validateInput(children) {
-    let isValid = 0;
-    React.Children.forEach(children, (child) => {
-      const isGCInput = child.type.name === 'GCInput';
-      if (isGCInput) {
-
-        if (child.type.validateInput(child.props) != null) {
-          isValid += 1;
-        }
-      }
-    });
-    return isValid === 0;
-  }
-
-  getChildren() {
-    return React.Children.map(this.props.children, (child) => {
-      if (child.type.name === 'GCInput') {
-        return React.cloneElement(child, {
-          submitPressed: this.state.submitPressed
-        });
-      } else {
-        return child;
-      }
-    })
-  }
+  // validateInput(children) {
+  //   let isValid = 0;
+  //   React.Children.forEach(children, (child) => {
+  //     const isGCInput = child.type.name === 'GCInput';
+  //     if (isGCInput) {
+  //
+  //       if (child.type.validateInput(child.props) != null) {
+  //         isValid += 1;
+  //       }
+  //     }
+  //   });
+  //   return isValid === 0;
+  // }
 
   render() {
     return (
-      <form className="gc-form" onSubmit={e => this.onSubmit(e)}>
-        {this.state.submitPressed ? this.getChildren() : this.props.children}
-
+      <form
+        className="gc-form"
+        onSubmit={this.submitForm}>
+        {this.props.children({ fields: this.getFields() })}
       </form>
     );
   }
 }
 
 GCForm.propTypes = {
-  children: PropTypes.node.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 

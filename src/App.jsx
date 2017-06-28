@@ -32,123 +32,129 @@ class App extends Component {
   }
 
   render() {
+    const formFields = {
+      name: {
+        value: this.state.name,
+        state: 'name',
+        name: 'nameTxt',
+        type: 'name',
+        placeholder: 'Please enter your name',
+        required: true
+      },
+      email: {
+        value: this.state.email,
+        state: 'email',
+        name: 'emailTxt',
+        type: 'email',
+        placeholder: 'name@domain.com'
+      },
+      number: {
+        value: this.state.number,
+        state: 'number',
+        name: 'numTxt',
+        type: 'number',
+        min: 5,
+        max: 10
+      },
+      regex: {
+        value: this.state.text,
+        state: 'text',
+        name: 'nameTxt',
+        type: 'text',
+        placeholder: "Type something that starts with a 'W'.",
+        customRegex: /\bW/g,
+        customErrorMessage: 'Must start with uppercase W'
+      },
+      password: {
+        value: this.state.password,
+        name: 'passwordTxt',
+        type: 'password',
+        minLength: 8
+      },
+      date: {
+        value: this.state.date,
+        name: 'dateTxt',
+        type: 'date',
+        maxDate: '2017-07-23'
+      },
+      range: {
+        value: this.state.range,
+        name: 'rangeTxt',
+        type: 'range',
+        max: 20,
+        min: 4,
+        defaultValue: '9'
+      }
+      disabled: {
+        value: this.state.disabled,
+        name: 'disabledTxt',
+        placeholder: 'This input is disabled.',
+        type: 'text',
+        disabled: true
+      }
+    }
     return (
       <div className="App">
-        <h1>
-            GC Form Validation
-        </h1>
+        <h1>GC Form Validation</h1>
 
         <div>
-          <GCForm onSubmit={() => this.handleSubmit()}>
-            <label
-              htmlFor="nameTxt"
-              className="gc-form__label"
-            >Name</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'name')}
-              value={this.state.name}
-              ref={(input) => { this.input = input; }}
-              name="nameTxt"
-              placeholder="Please enter your name"
-              type="name"
-              required
-            />
+          <GCForm
+            fields={formFields}
+            onSubmit={() => this.handleSubmit()}
+            handleInputChange={this.handleChange}>
+            {({fields}) => (
+              <label
+                htmlFor="nameTxt"
+                className="gc-form__label"
+              >Name</label>
+              {fields.name}
 
-            <label
-              htmlFor="emailTxt"
-              className="gc-form__label"
-            >Email</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'email')}
-              value={this.state.email}
-              name="emailTxt"
-              placeholder="name@domain.com"
-              type="email"
-            />
+              <label
+                htmlFor="emailTxt"
+                className="gc-form__label"
+              >Email</label>
+              {fields.email}
 
-            <label
-              htmlFor="numTxt"
-              className="gc-form__label"
-            >Number</label>
+              <label
+                htmlFor="numTxt"
+                className="gc-form__label"
+              >Number</label>
+              {fields.number}
 
-            <GCInput
-              onChange={val => this.handleChange(val, 'number')}
-              value={this.state.number}
-              name="numTxt"
-              type="number"
-              min={5}
-              max={10}
-            />
+              <label
+                htmlFor="nameTxt"
+                className="gc-form__label"
+              >Custom Regular Expression</label>
+              {fields.regex}
 
-            <label
-              htmlFor="nameTxt"
-              className="gc-form__label"
-            >Custom Regular Expression</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'text')}
-              value={this.state.text}
-              name="nameTxt"
-              placeholder="Type something that starts with a 'W'."
-              customRegex={/\bW/g}
-              customErrorMessage="Must start with uppercase W"
-              type="text"
-            />
+              <label
+                htmlFor="passwordTxt"
+                className="gc-form__label"
+              >Password</label>
+              {fields.password}
 
-            <label
-              htmlFor="passwordTxt"
-              className="gc-form__label"
-            >Password</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'password')}
-              value={this.state.password}
-              name="passwordTxt"
-              type="password"
-              minLength={8}
-            />
+              <div>
+                <label
+                  htmlFor="dateTxt"
+                  className="gc-form__label"
+                >Date</label>
+                {fields.date}
+              </div>
 
-          <div>
-            <label
-              htmlFor="dateTxt"
-              className="gc-form__label"
-            >Date</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'date')}
-              value={this.state.date}
-              name="dateTxt"
-              type="date"
-              maxDate="2017-07-23"
-            />
-          </div>
+              <label
+                htmlFor="rangeTxt"
+                className="gc-form__label"
+              >Range</label>
+              {fields.range}
 
-            <label
-              htmlFor="rangeTxt"
-              className="gc-form__label"
-            >Range</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'range')}
-              value={this.state.range}
-              name="rangeTxt"
-              type="range"
-              max={20}
-              min={4}
-              defaultValue="9"
-            />
+              <label
+                htmlFor="rangeTxt"
+                className="gc-form__label"
+              >Disabled</label>
+              {fields.disabled}
 
-            <label
-              htmlFor="rangeTxt"
-              className="gc-form__label"
-            >Disabled</label>
-            <GCInput
-              onChange={val => this.handleChange(val, 'disabled')}
-              value={this.state.disabled}
-              name="disabledTxt"
-              placeholder="This input is disabled."
-              type="text"
-              disabled
-            />
-
-            <button className="gc-form__submit-btn">Submit</button>
-
+              <button className="gc-form__submit-btn">Submit</button>
+            )}
           </GCForm>
 
         </div>

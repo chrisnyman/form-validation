@@ -105,7 +105,7 @@ class App extends Component {
           <GCForm
             data={formFields}
             onSubmit={() => this.handleSubmit()}
-            handleInputChange={this.handleChange}
+            handleInputChange={(v, t) => this.handleChange(v, t)}
           >
             {({ fields }) => (
               <div>

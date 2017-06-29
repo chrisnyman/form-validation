@@ -36,16 +36,16 @@ class GCForm extends Component {
 
     setTimeout(() => {
       const dataKeys = Object.keys(this.props.data);
-      if (counter === dataKeys.length) {
+      if (GCFormCounter === dataKeys.length) {
         this.props.onSubmit();
       }
-      counter = 0;
+      GCFormCounter = 0;
     }, 500);
   }
 
   validateForm(results) {
     if (results) {
-      counter++;
+      GCFormCounter++;
     }
   }
 

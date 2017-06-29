@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import GCForm from './Components/GCValidation/GCForm/GCForm';
-import GCInput from './Components/GCValidation/GCInput/GCInput';
 
 import './App.css';
 

@@ -19,7 +19,6 @@ class GCInput extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.touchedByParent && this.props.touchedByParent !== nextProps.touchedByParent) {
       this.validateInput();
-      // send results to parent
     }
   }
 
@@ -131,9 +130,10 @@ class GCInput extends Component {
     }
 
     this.setState({ validationMessage: error }, () => {
-      console.log(this.state.validationMessage);
+      if (this.props.touchedByParent) {
+        this.props.sendResultsToForm(error);
+      }
     });
-    return error;
   }
 
   handleErrorMessage(v, msg = 'Invalid Input') {
@@ -150,14 +150,8 @@ class GCInput extends Component {
     return new RegExp(regX);
   }
 
-  // showValidationError() {
-  //   return (this.state.hasBeenBlurred && this.validateInput(this.props)) || (this.props.submitPressed && this.validateInput(this.props));
-  // }
-
   handleChange(e) {
     if (!this.props.disabled) {
-      // const isValid = this.validateInput(this.props) === null;
-      // this.props.onChange(e.target.value, isValid);
       this.props.onChange(e.target.value, this.props.stateName);
     }
   }
@@ -208,6 +202,7 @@ GCInput.propTypes = {
   customRegex: PropTypes.object,
   customErrorMessage: PropTypes.string,
   touchedByParent: PropTypes.bool,
+  sendResultsToForm: PropTypes.func,
 };
 
 GCInput.defaultProps = {
@@ -225,6 +220,7 @@ GCInput.defaultProps = {
   customRegex: null,
   customErrorMessage: null,
   touchedByParent: false,
+  sendResultsToForm: null,
 };
 
 export default GCInput;

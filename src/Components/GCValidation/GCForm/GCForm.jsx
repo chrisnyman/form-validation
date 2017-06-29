@@ -9,17 +9,23 @@ class GCForm extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      formValid: false,
+      formValid: 0,
       formSubmitted: false,
-    }
+    };
   }
 
   submitForm(e) {
     e.preventDefault();
-    console.log('form submitted');
-    this.setState({ formSubmitted: true }, () => {
-      console.log(this.state);
-    });
+    this.setState({ formSubmitted: true });
+  }
+
+  validateForm(results) {
+    if(!results) {
+      const validCount = this.state.formValid + 1;
+      this.setState({ formValid: validCount }, () => {
+        console.log(validCount);
+      });
+    }
   }
 
   getFields() {
@@ -28,22 +34,9 @@ class GCForm extends Component {
         {...d}
         onChange={this.props.handleInputChange}
         touchedByParent={this.state.formSubmitted}
+        sendResultsToForm={r => this.validateForm(r)}
       />));
   }
-
-  // validateInput(children) {
-  //   let isValid = 0;
-  //   React.Children.forEach(children, (child) => {
-  //     const isGCInput = child.type.name === 'GCInput';
-  //     if (isGCInput) {
-  //
-  //       if (child.type.validateInput(child.props) != null) {
-  //         isValid += 1;
-  //       }
-  //     }
-  //   });
-  //   return isValid === 0;
-  // }
 
   render() {
     return (

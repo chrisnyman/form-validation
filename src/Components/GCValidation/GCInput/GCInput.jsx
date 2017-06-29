@@ -24,7 +24,7 @@ class GCInput extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.value !== this.props.value || nextProps.touchedByParent !== this.props.touchedByParent;
+    return nextProps.value !== this.props.value || nextProps.touchedByParent !== this.props.touchedByParent || nextState.validationMessage !== this.state.validationMessage;
   }
 
   determineType(type) {
@@ -130,6 +130,9 @@ class GCInput extends Component {
       error = 'This field is required';
     }
 
+    this.setState({ validationMessage: error }, () => {
+      console.log(this.state.validationMessage);
+    });
     return error;
   }
 
@@ -177,7 +180,7 @@ class GCInput extends Component {
           max={this.props.max}
         />
 
-      {this.state.validationMessage && (
+        {this.state.validationMessage && (
           <p className="gc-input__error-msg">
             {this.state.validationMessage}
           </p>

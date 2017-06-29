@@ -59,44 +59,44 @@ class GCInput extends Component {
   }
 
   validateEmail(value) {
-    const pattern = GCInput.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    const pattern = this.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     const valid = pattern.test(value);
-    return GCInput.handleErrorMessage(valid, 'The email address you have entered is not valid');
+    return this.handleErrorMessage(valid, 'The email address you have entered is not valid');
   }
 
   validateName(value) {
-    const pattern = GCInput.handleRegExp(/\d/);
+    const pattern = this.handleRegExp(/\d/);
     let valid;
     if (value.length > this.props.minLength && value.length < this.props.maxLength) {
       valid = pattern.test(value);
       if (!this.props.customRegex) {
         valid = !valid;
       }
-      return GCInput.handleErrorMessage(valid);
+      return this.handleErrorMessage(valid);
     } else {
-      return GCInput.handleErrorMessage(valid, 'Not right length');
+      return this.handleErrorMessage(valid, 'Not right length');
     }
   }
 
   validatePassword(value) {
     const min = this.props.minLength !== 0 ? this.props.minLength : 8;
-    return GCInput.handleErrorMessage(value.length > min, `Password needs to have more than ${min} characters`);
+    return this.handleErrorMessage(value.length > min, `Password needs to have more than ${min} characters`);
   }
 
   validateDate(value) {
     const min = new Date(this.props.minDate);
     const max = new Date(this.props.maxDate);
     const selectedDate = new Date(value);
-    return GCInput.handleErrorMessage(min >= selectedDate && max <= selectedDate, `Please select a date between ${min.toDateString()} and ${max.toDateString()}`);
+    return this.handleErrorMessage(min >= selectedDate && max <= selectedDate, `Please select a date between ${min.toDateString()} and ${max.toDateString()}`);
   }
 
   validateNumber(value) {
     const min = this.props.min;
     const max = this.props.max;
     if (min > value) {
-      return GCInput.handleErrorMessage(false, `Number must be higher than ${min}.`);
+      return this.handleErrorMessage(false, `Number must be higher than ${min}.`);
     } else if (max < value) {
-      return GCInput.handleErrorMessage(false, `Number must be lower than ${max}`);
+      return this.handleErrorMessage(false, `Number must be lower than ${max}`);
     }
   }
 
@@ -106,20 +106,20 @@ class GCInput extends Component {
     if (props.value) {
       switch (props.type) {
         case 'email':
-          error = GCInput.validateEmail(props.value);
+          error = this.validateEmail(props.value);
           break;
         case 'password':
-          error = GCInput.validatePassword(props.value);
+          error = this.validatePassword(props.value);
           break;
         case 'name':
         case 'text':
-          error = GCInput.validateName(props.value);
+          error = this.validateName(props.value);
           break;
         case 'date':
-          error = GCInput.validateDate(props.value);
+          error = this.validateDate(props.value);
           break;
         case 'number':
-          error = GCInput.validateNumber(props.value);
+          error = this.validateNumber(props.value);
           break;
         case 'range':
         default:
@@ -148,12 +148,12 @@ class GCInput extends Component {
   }
 
   // showValidationError() {
-  //   return (this.state.hasBeenBlurred && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
+  //   return (this.state.hasBeenBlurred && this.validateInput(this.props)) || (this.props.submitPressed && this.validateInput(this.props));
   // }
 
   handleChange(e) {
     if (!this.props.disabled) {
-      // const isValid = GCInput.validateInput(this.props) === null;
+      // const isValid = this.validateInput(this.props) === null;
       // this.props.onChange(e.target.value, isValid);
       this.props.onChange(e.target.value, this.props.stateName);
     }

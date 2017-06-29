@@ -35,7 +35,7 @@ class App extends Component {
     const formFields = {
       name: {
         value: this.state.name,
-        state: 'name',
+        stateName: 'name',
         name: 'nameTxt',
         type: 'name',
         placeholder: 'Please enter your name',
@@ -43,14 +43,14 @@ class App extends Component {
       },
       email: {
         value: this.state.email,
-        state: 'email',
+        stateName: 'email',
         name: 'emailTxt',
         type: 'email',
         placeholder: 'name@domain.com'
       },
       number: {
         value: this.state.number,
-        state: 'number',
+        stateName: 'number',
         name: 'numTxt',
         type: 'number',
         min: 5,
@@ -58,7 +58,7 @@ class App extends Component {
       },
       regex: {
         value: this.state.text,
-        state: 'text',
+        stateName: 'text',
         name: 'nameTxt',
         type: 'text',
         placeholder: "Type something that starts with a 'W'.",
@@ -67,26 +67,30 @@ class App extends Component {
       },
       password: {
         value: this.state.password,
+        stateName: 'password',
         name: 'passwordTxt',
         type: 'password',
         minLength: 8
       },
       date: {
         value: this.state.date,
+        stateName: 'date',
         name: 'dateTxt',
         type: 'date',
         maxDate: '2017-07-23'
       },
       range: {
         value: this.state.range,
+        stateName: 'range',
         name: 'rangeTxt',
         type: 'range',
         max: 20,
         min: 4,
         defaultValue: '9'
-      }
+      },
       disabled: {
         value: this.state.disabled,
+        stateName: 'disabled',
         name: 'disabledTxt',
         placeholder: 'This input is disabled.',
         type: 'text',
@@ -99,62 +103,64 @@ class App extends Component {
 
         <div>
           <GCForm
-            fields={formFields}
+            data={formFields}
             onSubmit={() => this.handleSubmit()}
-            handleInputChange={this.handleChange}>
-            {({fields}) => (
-              <label
-                htmlFor="nameTxt"
-                className="gc-form__label"
-              >Name</label>
-              {fields.name}
-
-              <label
-                htmlFor="emailTxt"
-                className="gc-form__label"
-              >Email</label>
-              {fields.email}
-
-              <label
-                htmlFor="numTxt"
-                className="gc-form__label"
-              >Number</label>
-              {fields.number}
-
-              <label
-                htmlFor="nameTxt"
-                className="gc-form__label"
-              >Custom Regular Expression</label>
-              {fields.regex}
-
-              <label
-                htmlFor="passwordTxt"
-                className="gc-form__label"
-              >Password</label>
-              {fields.password}
-
+            handleInputChange={this.handleChange}
+          >
+            {({ fields }) => (
               <div>
                 <label
-                  htmlFor="dateTxt"
+                  htmlFor="nameTxt"
                   className="gc-form__label"
-                >Date</label>
-                {fields.date}
-              </div>
+                >Name</label>
+                {fields.name}
 
-              <label
-                htmlFor="rangeTxt"
-                className="gc-form__label"
-              >Range</label>
-              {fields.range}
+                <label
+                  htmlFor="emailTxt"
+                  className="gc-form__label"
+                >Email</label>
+                {fields.email}
 
-              <label
-                htmlFor="rangeTxt"
-                className="gc-form__label"
-              >Disabled</label>
-              {fields.disabled}
+                <label
+                  htmlFor="numTxt"
+                  className="gc-form__label"
+                >Number</label>
+                {fields.number}
 
-              <button className="gc-form__submit-btn">Submit</button>
-            )}
+                <label
+                  htmlFor="nameTxt"
+                  className="gc-form__label"
+                >Custom Regular Expression</label>
+                {fields.regex}
+
+                <label
+                  htmlFor="passwordTxt"
+                  className="gc-form__label"
+                >Password</label>
+                {fields.password}
+
+                <div>
+                  <label
+                    htmlFor="dateTxt"
+                    className="gc-form__label"
+                  >Date</label>
+                  {fields.date}
+                </div>
+
+                <label
+                  htmlFor="rangeTxt"
+                  className="gc-form__label"
+                >Range</label>
+                {fields.range}
+
+                <label
+                  htmlFor="rangeTxt"
+                  className="gc-form__label"
+                >Disabled</label>
+                {fields.disabled}
+
+                <button className="gc-form__submit-btn">Submit</button>
+              </div>)}
           </GCForm>
 
         </div>

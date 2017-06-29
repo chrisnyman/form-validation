@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import GCInput from '../GCInput/GCInput';
 
 import './gc-form.css';
 
@@ -13,7 +14,7 @@ class GCForm extends Component {
     }
   }
 
-  submitForm = (e) => {
+  submitForm(e) {
     e.preventDefault();
     console.log('form submitted');
     this.setState({ formSubmitted: true }, () => {
@@ -22,9 +23,9 @@ class GCForm extends Component {
   }
 
   getFields() {
-    return _.mapValues(this.props.fields, field =>
-      (<Child
-        {...field}
+    return _.mapValues(this.props.data, d =>
+      (<GCInput
+        {...d}
         onChange={this.props.handleInputChange}
         touchedByParent={this.state.formSubmitted}
       />));
@@ -48,7 +49,8 @@ class GCForm extends Component {
     return (
       <form
         className="gc-form"
-        onSubmit={this.submitForm}>
+        onSubmit={e => this.submitForm(e)}
+      >
         {this.props.children({ fields: this.getFields() })}
       </form>
     );
@@ -56,7 +58,9 @@ class GCForm extends Component {
 }
 
 GCForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+  children: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default GCForm;

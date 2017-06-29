@@ -8,7 +8,7 @@ class GCInput extends Component {
     super(props, context);
     this.state = {
       type: 'text',
-      hasBeenBlurred: false,
+      validationMessage: null
     };
   }
 
@@ -16,8 +16,15 @@ class GCInput extends Component {
     this.determineType(this.props.type);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.touchedByParent && this.props.touchedByParent !== nextProps.touchedByParent) {
+      this.validateInput();
+      // send results to parent
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.value !== this.props.value || nextProps.submitPressed !== this.props.submitPressed || nextState.hasBeenBlurred !== this.state.hasBeenBlurred;
+    return nextProps.value !== this.props.value || nextProps.touchedByParent !== this.props.touchedByParent;
   }
 
   determineType(type) {
@@ -51,67 +58,68 @@ class GCInput extends Component {
     this.setState({ type: inputType });
   }
 
-  static validateEmail(value, props) {
-    const pattern = GCInput.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, props);
+  validateEmail(value) {
+    const pattern = GCInput.handleRegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     const valid = pattern.test(value);
-    return GCInput.handleErrorMessage(valid, props, 'The email address you have entered is not valid');
+    return GCInput.handleErrorMessage(valid, 'The email address you have entered is not valid');
   }
 
-  static validateName(value, props) {
-    const pattern = GCInput.handleRegExp(/\d/, props);
+  validateName(value) {
+    const pattern = GCInput.handleRegExp(/\d/);
     let valid;
-    if (value.length > props.minLength && value.length < props.maxLength) {
+    if (value.length > this.props.minLength && value.length < this.props.maxLength) {
       valid = pattern.test(value);
-      if (!props.customRegex) {
+      if (!this.props.customRegex) {
         valid = !valid;
       }
-      return GCInput.handleErrorMessage(valid, props);
+      return GCInput.handleErrorMessage(valid);
     } else {
-      return GCInput.handleErrorMessage(valid, props, 'Not right length');
+      return GCInput.handleErrorMessage(valid, 'Not right length');
     }
   }
 
-  static validatePassword(value, props) {
-    const min = props.minLength !== 0 ? props.minLength : 8;
-    return GCInput.handleErrorMessage(value.length > min, props, `Password needs to have more than ${min} characters`);
+  validatePassword(value) {
+    const min = this.props.minLength !== 0 ? this.props.minLength : 8;
+    return GCInput.handleErrorMessage(value.length > min, `Password needs to have more than ${min} characters`);
   }
 
-  static validateDate(value, props) {
-    const min = new Date(props.minDate);
-    const max = new Date(props.maxDate);
+  validateDate(value) {
+    const min = new Date(this.props.minDate);
+    const max = new Date(this.props.maxDate);
     const selectedDate = new Date(value);
-    return GCInput.handleErrorMessage(min >= selectedDate && max <= selectedDate, props, `Please select a date between ${min.toDateString()} and ${max.toDateString()}`);
+    return GCInput.handleErrorMessage(min >= selectedDate && max <= selectedDate, `Please select a date between ${min.toDateString()} and ${max.toDateString()}`);
   }
 
-  static validateNumber(value, props) {
-    const min = props.min;
-    const max = props.max;
+  validateNumber(value) {
+    const min = this.props.min;
+    const max = this.props.max;
     if (min > value) {
-      return GCInput.handleErrorMessage(false, props, `Number must be higher than ${min}.`);
+      return GCInput.handleErrorMessage(false, `Number must be higher than ${min}.`);
     } else if (max < value) {
-      return GCInput.handleErrorMessage(false, props, `Number must be lower than ${max}`);
+      return GCInput.handleErrorMessage(false, `Number must be lower than ${max}`);
     }
   }
 
-  static validateInput(props) {
+  validateInput() {
+    const props = this.props;
     let error = null;
     if (props.value) {
       switch (props.type) {
         case 'email':
-          error = GCInput.validateEmail(props.value, props);
+          error = GCInput.validateEmail(props.value);
           break;
         case 'password':
-          error = GCInput.validatePassword(props.value, props);
+          error = GCInput.validatePassword(props.value);
           break;
         case 'name':
         case 'text':
-          error = GCInput.validateName(props.value, props);
+          error = GCInput.validateName(props.value);
           break;
         case 'date':
-          error = GCInput.validateDate(props.value, props);
+          error = GCInput.validateDate(props.value);
           break;
         case 'number':
-          error = GCInput.validateNumber(props.value, props);
+          error = GCInput.validateNumber(props.value);
           break;
         case 'range':
         default:
@@ -125,33 +133,34 @@ class GCInput extends Component {
     return error;
   }
 
-  static handleErrorMessage(v, props, msg = 'Invalid Input') {
+  handleErrorMessage(v, msg = 'Invalid Input') {
     if (!v) {
-      return props.customErrorMessage || msg;
+      return this.props.customErrorMessage || msg;
     }
     return null;
   }
 
-  static handleRegExp(regX, props) {
-    if (props.customRegex) {
-      return new RegExp(props.customRegex);
+  handleRegExp(regX) {
+    if (this.props.customRegex) {
+      return new RegExp(this.props.customRegex);
     }
     return new RegExp(regX);
   }
 
-  showValidationError() {
-    return (this.state.hasBeenBlurred && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
-  }
+  // showValidationError() {
+  //   return (this.state.hasBeenBlurred && GCInput.validateInput(this.props)) || (this.props.submitPressed && GCInput.validateInput(this.props));
+  // }
 
   handleChange(e) {
     if (!this.props.disabled) {
-      const isValid = GCInput.validateInput(this.props) === null;
-      this.props.onChange(e.target.value, isValid);
+      // const isValid = GCInput.validateInput(this.props) === null;
+      // this.props.onChange(e.target.value, isValid);
+      this.props.onChange(e.target.value, this.props.stateName);
     }
   }
 
   render() {
-    const invalidClass = this.showValidationError() ? 'gc-input--invalid' : '';
+    const invalidClass = this.state.validationMessage ? 'gc-input--invalid' : '';
     const disabledClass = this.props.disabled ? 'gc-input--disabled' : '';
     return (
       <div className={`gc-input ${this.props.extendedClass}`}>
@@ -162,15 +171,16 @@ class GCInput extends Component {
           type={this.state.type}
           value={this.props.value}
           placeholder={this.props.placeholder}
-          onBlur={() => this.setState({ hasBeenBlurred: true })}
+          onBlur={() => this.validateInput()}
           onChange={e => this.handleChange(e)}
           min={this.props.min}
           max={this.props.max}
         />
 
-        {this.showValidationError() && (
+      {this.state.validationMessage && (
           <p className="gc-input__error-msg">
-            {GCInput.validateInput(this.props)}</p>
+            {this.state.validationMessage}
+          </p>
         )}
       </div>
     );
@@ -180,6 +190,7 @@ class GCInput extends Component {
 GCInput.propTypes = {
   extendedClass: PropTypes.string,
   value: PropTypes.string,
+  stateName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   name: PropTypes.string,
@@ -193,8 +204,7 @@ GCInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   customRegex: PropTypes.object,
   customErrorMessage: PropTypes.string,
-  touchedByParent: PropTypes.func,
-  submitPressed: PropTypes.bool,
+  touchedByParent: PropTypes.bool,
 };
 
 GCInput.defaultProps = {
@@ -211,7 +221,7 @@ GCInput.defaultProps = {
   min: null,
   customRegex: null,
   customErrorMessage: null,
-  submitPressed: false,
+  touchedByParent: false,
 };
 
 export default GCInput;

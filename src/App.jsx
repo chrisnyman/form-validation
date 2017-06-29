@@ -17,6 +17,7 @@ class App extends Component {
       text: '',
       number: '',
       disabled: '',
+      textarea: '',
     };
   }
 
@@ -39,6 +40,14 @@ class App extends Component {
         type: 'name',
         placeholder: 'Please enter your name',
         required: true
+      },
+      textarea: {
+        value: this.state.textarea,
+        stateName: 'textarea',
+        name: 'textareaTxt',
+        type: 'textarea',
+        placeholder: 'Tell me more about yourself...',
+        required: true,
       },
       email: {
         value: this.state.email,
@@ -113,6 +122,12 @@ class App extends Component {
                   className="gc-form__label"
                 >Name</label>
                 {fields.name}
+
+                <label
+                  htmlFor="textareaTxt"
+                  className="gc-form__label"
+                >Bio</label>
+              {fields.textarea}
 
                 <label
                   htmlFor="emailTxt"

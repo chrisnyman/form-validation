@@ -53,6 +53,8 @@ class GCInput extends Component {
       case 'number':
         inputType = 'number';
         break;
+      case 'textarea':
+        inputType = 'textarea';
       default:
         inputType = 'text';
         break;
@@ -74,6 +76,17 @@ class GCInput extends Component {
       if (!this.props.customRegex) {
         valid = !valid;
       }
+      return this.handleErrorMessage(valid);
+    } else {
+      return this.handleErrorMessage(valid, 'Not right length');
+    }
+  }
+
+  validateTextarea(value) {
+    const pattern = this.handleRegExp('');
+    let valid;
+    if (value.length > this.props.minLength && value.length < this.props.maxLength) {
+      valid = pattern.test(value);
       return this.handleErrorMessage(valid);
     } else {
       return this.handleErrorMessage(valid, 'Not right length');
@@ -123,6 +136,8 @@ class GCInput extends Component {
         case 'number':
           error = this.validateNumber(props.value);
           break;
+        case 'textarea':
+          error = this.validateTextarea(props.value);
         case 'range':
         default:
           error = null;
@@ -167,18 +182,32 @@ class GCInput extends Component {
     const disabledClass = this.props.disabled ? 'gc-input--disabled' : '';
     return (
       <div className={`gc-input ${this.props.extendedClass}`}>
-        <input
-          className={`${invalidClass} ${disabledClass}`}
-          disabled={this.props.disabled}
-          name={this.props.name}
-          type={this.state.type}
-          value={this.props.value}
-          placeholder={this.props.placeholder}
-          onBlur={() => this.validateInput()}
-          onChange={e => this.handleChange(e)}
-          min={this.props.min}
-          max={this.props.max}
-        />
+        {this.props.type !== 'textarea' ? (
+          <input
+            className={`${invalidClass} ${disabledClass}`}
+            disabled={this.props.disabled}
+            name={this.props.name}
+            type={this.state.type}
+            value={this.props.value}
+            placeholder={this.props.placeholder}
+            onBlur={() => this.validateInput()}
+            onChange={e => this.handleChange(e)}
+            min={this.props.min}
+            max={this.props.max}
+          />
+        ) : (
+          <textarea
+            className={`${invalidClass} ${disabledClass}`}
+            disabled={this.props.disabled}
+            name={this.props.name}
+            defaultValue={this.props.value}
+            placeholder={this.props.placeholder}
+            onBlur={() => this.validateInput()}
+            onChange={e => this.handleChange(e)}
+            min={this.props.min}
+            max={this.props.max}
+          />
+        )}
 
         {this.state.validationMessage && (
           <p className="gc-input__error-msg">

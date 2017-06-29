@@ -4,27 +4,19 @@ import _ from 'lodash';
 import GCInput from '../GCInput/GCInput';
 
 import './gc-form.css';
+let GCFormCounter = 0;
 
 class GCForm extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      formValid: 0,
       formSubmitted: false,
     };
   }
 
-  submitForm(e) {
-    e.preventDefault();
-    this.setState({ formSubmitted: true });
-  }
-
-  validateForm(results) {
-    if(!results) {
-      const validCount = this.state.formValid + 1;
-      this.setState({ formValid: validCount }, () => {
-        console.log(validCount);
-      });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.formSubmitted) {
+      this.setState({ formSubmitted: false });
     }
   }
 
@@ -36,6 +28,25 @@ class GCForm extends Component {
         touchedByParent={this.state.formSubmitted}
         sendResultsToForm={r => this.validateForm(r)}
       />));
+  }
+
+  submitForm(e) {
+    e.preventDefault();
+    this.setState({ formSubmitted: true });
+
+    setTimeout(() => {
+      const dataKeys = Object.keys(this.props.data);
+      if (counter === dataKeys.length) {
+        this.props.onSubmit();
+      }
+      counter = 0;
+    }, 500);
+  }
+
+  validateForm(results) {
+    if (results) {
+      counter++;
+    }
   }
 
   render() {
@@ -54,6 +65,7 @@ GCForm.propTypes = {
   handleInputChange: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default GCForm;

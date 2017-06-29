@@ -8,7 +8,8 @@ class GCInput extends Component {
     super(props, context);
     this.state = {
       type: 'text',
-      validationMessage: null
+      validationMessage: null,
+      touchedByParent: props.touchedByParent,
     };
   }
 
@@ -18,7 +19,9 @@ class GCInput extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.touchedByParent && this.props.touchedByParent !== nextProps.touchedByParent) {
-      this.validateInput();
+      this.setState({ touchedByParent: true }, () => {
+        this.validateInput();
+      })
     }
   }
 
@@ -129,10 +132,13 @@ class GCInput extends Component {
       error = 'This field is required';
     }
 
-    this.setState({ validationMessage: error }, () => {
-      if (this.props.touchedByParent) {
-        this.props.sendResultsToForm(error);
-      }
+    if (this.state.touchedByParent) {
+      this.props.sendResultsToForm(!error);
+    }
+
+    this.setState({
+      validationMessage: error,
+      touchedByParent: false
     });
   }
 

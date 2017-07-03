@@ -11,7 +11,8 @@ This is the component that captures user input. It accepts properties that deter
 ### Props
 | Property | Definition                             | Required | Options   |
 |----------|:---------------------------------------|:---------|:----------|
-| type     | Determines the type of validation and type of input to render | Required | text, email, password, date, range, name |
+| type     | Determines the type of validation and type of input to render | Required | text, email, password, date, range, name, textarea |
+| stateName | Accepts state variables to change the input | Required | |
 | onChange | Pass function to control value. | Required | |
 | extendedClass | CSS class for adding custom styling. | Not required | |
 | value |  Accepts values for input | Not required | |
@@ -57,6 +58,9 @@ All input types accepts a `customErrorMessage` property which allows for custom 
 ---
 Used to wrap GCInput and checks that required and filled inputs are valid. If the check returns true then the form will allow submission.
 
+### Usage
+Forms accepts an object that represents the form fields using the property name of `fields`. To control the UI a template in the form of an anonymous function is passed in as a child. In the GCForm component the lodash method `_.mapValues` is used to render the fields.
+
 ```js
 handleSubmit() {
   // Do submit stuff here
@@ -67,14 +71,60 @@ handleChange() {
 }
 
 render() {
+  // Object with form data
+  const formFields = {
+    name: {
+      value: this.state.name,
+      stateName: 'name',
+      name: 'nameTxt',
+      type: 'name',
+      placeholder: 'Please enter your name',
+      required: true
+    },
+    textarea: {
+      value: this.state.textarea,
+      stateName: 'textarea',
+      name: 'textareaTxt',
+      type: 'textarea',
+      placeholder: 'Tell me more about yourself...',
+      required: true,
+    },
+    email: {
+      value: this.state.email,
+      stateName: 'email',
+      name: 'emailTxt',
+      type: 'email',
+      placeholder: 'name@domain.com'
+    }
+  };
   return(
-    <GCForm onSubmit={() => this.handleSubmit()}>
-      <GCInput
-        type="text"
-        value={this.state.text}
-        onChange={value => this.handleChange(value)}
-        placeholder="Fill me in"
-      />
+    <GCForm
+      data={formFields}
+      onSubmit={() => this.handleSubmit()}
+      handleInputChange={(v, t) => this.handleChange(v, t)}
+    >
+      {({ fields }) => (
+        <div>
+          <label
+            htmlFor="nameTxt"
+            className="gc-form__label"
+          >Name</label>
+          {fields.name}
+
+          <label
+            htmlFor="textareaTxt"
+            className="gc-form__label"
+          >Bio</label>
+        {fields.textarea}
+
+          <label
+            htmlFor="emailTxt"
+            className="gc-form__label"
+          >Email</label>
+          {fields.email}
+
+          <button className="gc-form__submit-btn">Submit</button>
+        </div>)}
     </GCForm>
   );
 }
@@ -88,4 +138,4 @@ node fuse.js
 ```
 
 ## Note
-GCForm component cannot detect nested GCInput components
+Requires lodash

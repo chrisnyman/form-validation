@@ -36,6 +36,7 @@ class GCInput extends Component {
         inputType = 'text';
         break;
       case 'text':
+      case 'url':
         inputType = 'text';
         break;
       case 'email':
@@ -55,8 +56,7 @@ class GCInput extends Component {
         break;
       case 'textarea':
         inputType = 'textarea';
-      case 'url':
-        inputType = 'url';
+        break;
       default:
         inputType = 'text';
         break;
@@ -82,6 +82,17 @@ class GCInput extends Component {
     } else {
       return this.handleErrorMessage(valid, 'Not right length');
     }
+  }
+
+  validateUrl(value) {
+    let usableUrl = '';
+    if((/^(https:\/\/|http:\/\/)/).test(value)) {
+      usableUrl = value;
+    } else {
+      usableUrl = 'https://' + value;
+    }
+    const valid = /[.]+/.test(usableUrl);
+    return this.handleErrorMessage(valid, 'Url is not valid');
   }
 
   validateTextarea(value) {
@@ -140,11 +151,15 @@ class GCInput extends Component {
           break;
         case 'textarea':
           error = this.validateTextarea(props.value);
+        case 'url':
+          error = this.validateUrl(props.value);
+          break;
         case 'range':
         default:
           error = null;
           break;
       }
+      console.log(error);
     } else if (props.required) {
       error = 'This field is required';
     }
@@ -152,7 +167,6 @@ class GCInput extends Component {
     if (this.state.touchedByParent) {
       this.props.sendResultsToForm(!error);
     }
-
     this.setState({
       validationMessage: error,
       touchedByParent: false

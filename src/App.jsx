@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       value: '',
       name: '',
-      email: '',
+      url: '',
       password: '',
       date: '',
       range: '',
@@ -49,12 +49,12 @@ class App extends Component {
         placeholder: 'Tell me more about yourself...',
         required: true,
       },
-      email: {
-        value: this.state.email,
-        stateName: 'email',
-        name: 'emailTxt',
-        type: 'email',
-        placeholder: 'name@domain.com'
+      url: {
+        value: this.state.url,
+        stateName: 'url',
+        name: 'urlTxt',
+        type: 'url',
+        placeholder: 'https://'
       },
       number: {
         value: this.state.number,
@@ -130,10 +130,10 @@ class App extends Component {
               {fields.textarea}
 
                 <label
-                  htmlFor="emailTxt"
+                  htmlFor="urlTxt"
                   className="gc-form__label"
-                >Email</label>
-                {fields.email}
+                >Enter a URL</label>
+              {fields.url}
 
                 <label
                   htmlFor="numTxt"

@@ -59,7 +59,7 @@ All input types accepts a `customErrorMessage` property which allows for custom 
 Used to wrap GCInput and checks that required and filled inputs are valid. If the check returns true then the form will allow submission.
 
 ### Usage
-Forms accepts an object that represents the form fields using the property name of `fields`. To control the UI a template in the form of an anonymous function is passed in as a child. In the GCForm component the lodash method `_.mapValues` is used to render the fields.
+Forms accepts an object that represents the form fields using the property name of `data`. To control the UI a template in the form of an anonymous function is passed in as a child. In the GCForm component the lodash method `_.mapValues` is used to render the fields.
 
 ```js
 handleSubmit() {

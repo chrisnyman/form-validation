@@ -55,6 +55,8 @@ class GCInput extends Component {
         break;
       case 'textarea':
         inputType = 'textarea';
+      case 'url':
+        inputType = 'url';
       default:
         inputType = 'text';
         break;

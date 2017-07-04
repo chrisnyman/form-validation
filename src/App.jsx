@@ -8,16 +8,9 @@ class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      value: '',
       name: '',
       url: '',
-      password: '',
-      date: '',
-      range: '',
-      text: '',
-      number: '',
-      disabled: '',
-      textarea: '',
+      check: false,
     };
   }
 
@@ -41,14 +34,6 @@ class App extends Component {
         placeholder: 'Please enter your name',
         required: true
       },
-      textarea: {
-        value: this.state.textarea,
-        stateName: 'textarea',
-        name: 'textareaTxt',
-        type: 'textarea',
-        placeholder: 'Tell me more about yourself...',
-        required: true,
-      },
       url: {
         value: this.state.url,
         stateName: 'url',
@@ -56,53 +41,11 @@ class App extends Component {
         type: 'url',
         placeholder: 'https://'
       },
-      number: {
-        value: this.state.number,
-        stateName: 'number',
-        name: 'numTxt',
-        type: 'number',
-        min: 5,
-        max: 10
-      },
-      regex: {
-        value: this.state.text,
-        stateName: 'text',
-        name: 'nameTxt',
-        type: 'text',
-        placeholder: "Type something that starts with a 'W'.",
-        customRegex: /\bW/g,
-        customErrorMessage: 'Must start with uppercase W'
-      },
-      password: {
-        value: this.state.password,
-        stateName: 'password',
-        name: 'passwordTxt',
-        type: 'password',
-        minLength: 8
-      },
-      date: {
-        value: this.state.date,
-        stateName: 'date',
-        name: 'dateTxt',
-        type: 'date',
-        maxDate: '2017-07-23'
-      },
-      range: {
-        value: this.state.range,
-        stateName: 'range',
-        name: 'rangeTxt',
-        type: 'range',
-        max: 20,
-        min: 4,
-        defaultValue: '9'
-      },
-      disabled: {
-        value: this.state.disabled,
-        stateName: 'disabled',
-        name: 'disabledTxt',
-        placeholder: 'This input is disabled.',
-        type: 'text',
-        disabled: true
+      check: {
+        value: this.state.check,
+        stateName: 'check',
+        name: 'checkTxt',
+        type: 'checkbox',
       }
     }
     return (
@@ -124,54 +67,16 @@ class App extends Component {
                 {fields.name}
 
                 <label
-                  htmlFor="textareaTxt"
-                  className="gc-form__label"
-                >Bio</label>
-              {fields.textarea}
-
-                <label
                   htmlFor="urlTxt"
                   className="gc-form__label"
                 >Enter a URL</label>
-              {fields.url}
+                {fields.url}
 
                 <label
-                  htmlFor="numTxt"
+                  htmlFor="checkTxt"
                   className="gc-form__label"
-                >Number</label>
-                {fields.number}
-
-                <label
-                  htmlFor="nameTxt"
-                  className="gc-form__label"
-                >Custom Regular Expression</label>
-                {fields.regex}
-
-                <label
-                  htmlFor="passwordTxt"
-                  className="gc-form__label"
-                >Password</label>
-                {fields.password}
-
-                <div>
-                  <label
-                    htmlFor="dateTxt"
-                    className="gc-form__label"
-                  >Date</label>
-                  {fields.date}
-                </div>
-
-                <label
-                  htmlFor="rangeTxt"
-                  className="gc-form__label"
-                >Range</label>
-                {fields.range}
-
-                <label
-                  htmlFor="rangeTxt"
-                  className="gc-form__label"
-                >Disabled</label>
-                {fields.disabled}
+                >Are you having fun?</label>
+              {fields.check}
 
                 <button className="gc-form__submit-btn">Submit</button>
               </div>)}

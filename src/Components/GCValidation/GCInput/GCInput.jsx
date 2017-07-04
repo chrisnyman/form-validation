@@ -42,6 +42,9 @@ class GCInput extends Component {
       case 'email':
         inputType = 'email';
         break;
+      case 'checkbox':
+        inputType = 'checkbox';
+        break;
       case 'password':
         inputType = 'password';
         break;
@@ -159,7 +162,6 @@ class GCInput extends Component {
           error = null;
           break;
       }
-      console.log(error);
     } else if (props.required) {
       error = 'This field is required';
     }
@@ -237,7 +239,10 @@ class GCInput extends Component {
 
 GCInput.propTypes = {
   extendedClass: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
   stateName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
@@ -258,7 +263,7 @@ GCInput.propTypes = {
 
 GCInput.defaultProps = {
   extendedClass: '',
-  value: '',
+  value: null,
   disabled: false,
   name: '',
   placeholder: '',

@@ -195,7 +195,12 @@ class GCInput extends Component {
 
   handleChange(e) {
     if (!this.props.disabled) {
-      this.props.onChange(e.target.value, this.props.stateName);
+      if(this.props.type === 'checkbox') {
+        this.props.onChange(!this.props.value, this.props.stateName)
+      } else {
+        this.props.onChange(e.target.value, this.props.stateName);
+      }
+
     }
   }
 

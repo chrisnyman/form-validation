@@ -6,17 +6,29 @@ class GCInput extends Component {
     return this.props.options.map( o => {
       return (
         <div>
-          <input type='radio' value={o.value} key={o.index} /> {o.label}
+          <input
+            type='radio'
+            value={o.value}
+            key={o.index}
+            name={this.props.name}
+            title={this.props.title}
+            onChange={e => this.handleChange(e)}
+          />
+          {o.label}
         </div>
       );
     });
+  }
+
+  handleChange(e) {
+    this.props.onChange(e.target.value, this.props.stateName);
   }
 
   render() {
     // const invalidClass = this.state.validationMessage ? 'gc-input--invalid' : '';
     const disabledClass = this.props.disabled ? 'gc-input--disabled' : '';
     return (
-      <div className={`${disabledClass}`}>
+      <div className={`${disabledClass} ${this.props.extendedClass}`}>
         {this.renderRadioOpts()}
       </div>
     );
@@ -25,8 +37,11 @@ class GCInput extends Component {
 
 GCInput.propTypes = {
   extendedClass: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
   stateName: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func.isRequired,
@@ -34,6 +49,7 @@ GCInput.propTypes = {
   touchedByParent: PropTypes.bool,
   sendResultsToForm: PropTypes.func,
   options: PropTypes.array,
+  title: PropTypes.string,
 };
 
 GCInput.defaultProps = {
@@ -46,6 +62,7 @@ GCInput.defaultProps = {
   touchedByParent: false,
   sendResultsToForm: null,
   options: [],
+  title: null,
 };
 
 export default GCInput;

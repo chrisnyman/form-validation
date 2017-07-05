@@ -46,7 +46,23 @@ class App extends Component {
         stateName: 'check',
         name: 'checkTxt',
         type: 'checkbox',
-      }
+      },
+      radio: {
+        value: this.state.check,
+        stateName: 'radio',
+        name: 'radioList',
+        type: 'radio',
+        options: [{
+          value: 'horse',
+          label: 'Choose horse'
+        }, {
+          value: 'cat',
+          label: 'Choose cat'
+        }, {
+          value: 'dog',
+          label: 'Choose dog'
+        }]
+      },
     }
     return (
       <div className="App">
@@ -76,7 +92,13 @@ class App extends Component {
                   htmlFor="checkTxt"
                   className="gc-form__label"
                 >Are you having fun?</label>
-              {fields.check}
+                {fields.check}
+
+                <label
+                  htmlFor="radioTxt"
+                  className="gc-form__label"
+                >Radio Buttons</label>
+              {fields.radio}
 
                 <button className="gc-form__submit-btn">Submit</button>
               </div>)}

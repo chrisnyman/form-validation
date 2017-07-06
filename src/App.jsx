@@ -15,6 +15,7 @@ class App extends Component {
   }
 
   handleChange(value, type) {
+    console.log(value);
     const obj = {};
     obj[type] = value;
     this.setState(obj);

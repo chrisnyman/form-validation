@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 
 class GCInput extends Component {
   renderRadioOpts() {
-    return this.props.options.map( o => {
+    const props = this.props;
+    return props.options.map((opt) => {
+      const d = new Date();
+      const uid = d.getTime() * 2;
       return (
         <div>
           <input
-            type='radio'
-            value={o.value}
-            key={o.index}
-            name={this.props.name}
-            title={this.props.title}
+            type="radio"
+            value={opt.value}
+            key={uid}
+            name={props.name}
+            title={props.title}
             onChange={e => this.handleChange(e)}
           />
-          {o.label}
+          {opt.label}
         </div>
       );
     });

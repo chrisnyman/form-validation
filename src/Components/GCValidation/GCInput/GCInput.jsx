@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import GCRadio from './GCRadio';
+import GCCheckbox from './GCCheckbox';
 
 import './gc-input.css';
 
@@ -23,7 +24,7 @@ class GCInput extends Component {
     if (nextProps.touchedByParent && this.props.touchedByParent !== nextProps.touchedByParent) {
       this.setState({ touchedByParent: true }, () => {
         this.validateInput();
-      })
+      });
     }
   }
 
@@ -195,12 +196,7 @@ class GCInput extends Component {
 
   handleChange(e) {
     if (!this.props.disabled) {
-      if(this.props.type === 'checkbox') {
-        this.props.onChange(!this.props.value, this.props.stateName)
-      } else {
-        this.props.onChange(e.target.value, this.props.stateName);
-      }
-
+      this.props.onChange(e.target.value, this.props.stateName);
     }
   }
 
@@ -221,6 +217,8 @@ class GCInput extends Component {
       />);
     } else if (this.props.type === 'radio') {
       return (<GCRadio {...this.props} />);
+    } else if (this.props.type === 'checkbox') {
+      return (<GCCheckbox {...this.props} />);
     } else {
       return (<input
         className={`${invalidClass} ${disabledClass}`}

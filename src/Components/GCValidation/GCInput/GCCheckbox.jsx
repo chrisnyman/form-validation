@@ -16,11 +16,17 @@ class GCCheckbox extends Component {
             name={props.name}
             title={props.title}
             onChange={e => this.handleChange(e)}
+            checked={this.matchValues(props.value, opt.value)}
           />
           {opt.label}
         </div>
       );
     });
+  }
+
+  matchValues(arr, value) {
+    console.log(arr.includes(value));
+    return arr.includes(value);
   }
 
   handleChange(e) {

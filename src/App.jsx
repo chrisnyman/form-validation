@@ -11,7 +11,7 @@ class App extends Component {
       name: '',
       url: '',
       check: false,
-      checkList: '',
+      checkList: ['horse', 'dog'],
       radio: 'cat',
     };
   }

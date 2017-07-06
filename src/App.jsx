@@ -51,7 +51,7 @@ class App extends Component {
         type: 'checkbox',
       },
       radio: {
-        value: this.state.check,
+        value: this.state.radio,
         stateName: 'radio',
         name: 'radioList',
         type: 'radio',

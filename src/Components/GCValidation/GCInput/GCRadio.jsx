@@ -15,6 +15,7 @@ class GCInput extends Component {
             key={uid}
             name={props.name}
             title={props.title}
+            checked={props.value===opt.value}
             onChange={e => this.handleChange(e)}
           />
           {opt.label}

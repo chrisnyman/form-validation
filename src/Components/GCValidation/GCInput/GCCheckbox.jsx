@@ -24,6 +24,9 @@ class GCCheckbox extends Component {
   }
 
   handleChange(e) {
+    if(this.props.options.length === 1) {
+      this.props.onChange(e.target.value, this.props.stateName);
+    }
     this.props.onChange(e.target.value, this.props.stateName);
   }
 
@@ -37,7 +40,7 @@ class GCCheckbox extends Component {
   }
 }
 
-GCInput.propTypes = {
+GCCheckbox.propTypes = {
   extendedClass: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
@@ -56,7 +59,7 @@ GCInput.propTypes = {
   multiple: PropTypes.bool,
 };
 
-GCInput.defaultProps = {
+GCCheckbox.defaultProps = {
   extendedClass: '',
   value: null,
   disabled: false,

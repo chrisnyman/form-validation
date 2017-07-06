@@ -11,6 +11,8 @@ class App extends Component {
       name: '',
       url: '',
       check: false,
+      checkList: '',
+      radio: 'cat',
     };
   }
 
@@ -64,6 +66,22 @@ class App extends Component {
           label: 'Choose dog'
         }]
       },
+      groupCheck: {
+        value: this.state.checkList,
+        stateName: 'checkList',
+        name: 'checkList',
+        type: 'checkbox',
+        options: [{
+          value: 'horse',
+          label: 'Choose horse'
+        }, {
+          value: 'cat',
+          label: 'Choose cat'
+        }, {
+          value: 'dog',
+          label: 'Choose dog'
+        }]
+      }
     }
     return (
       <div className="App">
@@ -99,7 +117,13 @@ class App extends Component {
                   htmlFor="radioTxt"
                   className="gc-form__label"
                 >Radio Buttons</label>
-              {fields.radio}
+                {fields.radio}
+
+                <label
+                  htmlFor="groupcheckTxt"
+                  className="gc-form__label"
+                >Group Checkbox</label>
+                {fields.groupCheck}
 
                 <button className="gc-form__submit-btn">Submit</button>
               </div>)}

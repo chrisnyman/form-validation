@@ -2,8 +2,35 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class GCCheckbox extends Component {
+  matchValues(arr, value) {
+    return arr.includes(value);
+  }
+
+  removeFromArray(arr, item) {
+    const index = arr.findIndex(el => item === el);
+    arr.splice(index, 1);
+    return arr;
+  }
+
+  handleChange(e) {
+    const props = this.props;
+    const selectedValue = e.target.value;
+    const prevValue = props.value.map(i => i);
+
+    if (props.options.length === 0) {
+      this.props.onChange(!props.value);
+    } else {
+      let newArray = prevValue;
+      if (prevValue.includes(selectedValue)) {
+        newArray = this.removeFromArray(prevValue, selectedValue);
+      } else {
+        newArray.push(selectedValue);
+      }
+      this.props.onChange(newArray);
+    }
+  }
+
   renderCheckboxOpts() {
-    console.log('being rendered');
     const props = this.props;
     return props.options.map((opt) => {
       const d = new Date();
@@ -24,38 +51,6 @@ class GCCheckbox extends Component {
         </div>
       );
     });
-  }
-
-  matchValues(arr, value) {
-    return arr.includes(value);
-  }
-
-  removeFromArray(arr, item) {
-    const index = arr.findIndex(el => item === el);
-    arr.splice(index, 1);
-    return arr;
-  }
-
-  handleChange(e) {
-    /*
-      If value was not part of the initial value array then the value should be added to the array.
-      If the value is part of the array then the value must be removed
-    */
-    const props = this.props;
-    const newValue = e.target.value;
-    const prevValue = props.value;
-
-    if (props.options.length === 0) {
-      this.props.onChange(!props.value, this.props.stateName);
-    } else {
-      let newArray = prevValue;
-      if (prevValue.includes(newValue)) {
-        newArray = this.removeFromArray(prevValue, newValue);
-      } else {
-        newArray.push(newValue);
-      }
-      this.props.onChange(newArray, this.props.stateName);
-    }
   }
 
   render() {

@@ -25,7 +25,7 @@ class GCInput extends Component {
   }
 
   handleChange(e) {
-    this.props.onChange(e.target.value, this.props.stateName);
+    this.props.onChange(e.target.value);
   }
 
   render() {

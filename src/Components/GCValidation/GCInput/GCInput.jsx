@@ -194,9 +194,9 @@ class GCInput extends Component {
     return new RegExp(regX);
   }
 
-  handleChange(e) {
+  handleChange(v) {
     if (!this.props.disabled) {
-      this.props.onChange(e.target.value, this.props.stateName);
+      this.props.onChange(v, this.props.stateName);
     }
   }
 
@@ -211,14 +211,14 @@ class GCInput extends Component {
         defaultValue={this.props.value}
         placeholder={this.props.placeholder}
         onBlur={() => this.validateInput()}
-        onChange={e => this.handleChange(e)}
+        onChange={e => this.handleChange(e.target.value)}
         min={this.props.min}
         max={this.props.max}
       />);
     } else if (this.props.type === 'radio') {
-      return (<GCRadio {...this.props} />);
+      return (<GCRadio {...this.props} onChange={(v) => this.handleChange(v)} />);
     } else if (this.props.type === 'checkbox') {
-      return (<GCCheckbox {...this.props} />);
+      return (<GCCheckbox {...this.props} onChange={(v) => this.handleChange(v)} />);
     } else {
       return (<input
         className={`${invalidClass} ${disabledClass}`}
@@ -228,7 +228,7 @@ class GCInput extends Component {
         value={this.props.value}
         placeholder={this.props.placeholder}
         onBlur={() => this.validateInput()}
-        onChange={e => this.handleChange(e)}
+        onChange={e => this.handleChange(e.target.value)}
         min={this.props.min}
         max={this.props.max}
       />);
@@ -254,6 +254,7 @@ GCInput.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
+    PropTypes.array,
   ]),
   stateName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

@@ -17,7 +17,6 @@ class App extends Component {
   }
 
   handleChange(value, type) {
-    console.log(value);
     const obj = {};
     obj[type] = value;
     this.setState(obj);
@@ -35,14 +34,14 @@ class App extends Component {
         name: 'nameTxt',
         type: 'name',
         placeholder: 'Please enter your name',
-        required: true
+        required: true,
       },
       url: {
         value: this.state.url,
         stateName: 'url',
         name: 'urlTxt',
         type: 'url',
-        placeholder: 'https://'
+        placeholder: 'https://',
       },
       check: {
         value: this.state.check,
@@ -57,32 +56,32 @@ class App extends Component {
         type: 'radio',
         options: [{
           value: 'horse',
-          label: 'Choose horse'
+          label: 'Choose horse',
         }, {
           value: 'cat',
-          label: 'Choose cat'
+          label: 'Choose cat',
         }, {
           value: 'dog',
-          label: 'Choose dog'
-        }]
+          label: 'Choose dog',
+        }],
       },
-      groupCheck: {
+      checkList: {
         value: this.state.checkList,
         stateName: 'checkList',
         name: 'checkList',
         type: 'checkbox',
         options: [{
           value: 'horse',
-          label: 'Choose horse'
+          label: 'Choose horse',
         }, {
           value: 'cat',
-          label: 'Choose cat'
+          label: 'Choose cat',
         }, {
           value: 'dog',
-          label: 'Choose dog'
-        }]
-      }
-    }
+          label: 'Choose dog',
+        }],
+      },
+    };
     return (
       <div className="App">
         <h1>GC Form Validation</h1>
@@ -123,7 +122,7 @@ class App extends Component {
                   htmlFor="groupcheckTxt"
                   className="gc-form__label"
                 >Group Checkbox</label>
-                {fields.groupCheck}
+              {fields.checkList}
 
                 <button className="gc-form__submit-btn">Submit</button>
               </div>)}

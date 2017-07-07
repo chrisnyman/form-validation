@@ -86,15 +86,17 @@ class GCInput extends Component {
 
   validateName(value) {
     const pattern = this.handleRegExp(/\d/);
+    const maxL = this.props.maxLength;
     let valid;
-    if (value.length > this.props.minLength && value.length < this.props.maxLength) {
+
+    if ((maxL && value.length < maxL) || !maxL) {
       valid = pattern.test(value);
       if (!this.props.customRegex) {
         valid = !valid;
       }
       return this.handleErrorMessage(valid);
     } else {
-      return this.handleErrorMessage(valid, 'Not right length');
+      return this.handleErrorMessage(valid, `May not contain more than ${maxL} characters`);
     }
   }
 
@@ -111,17 +113,21 @@ class GCInput extends Component {
 
   validateTextarea(value) {
     const pattern = this.handleRegExp('');
+    const minL = this.props.minLength;
+    const maxL = this.props.maxLength;
     let valid;
-    if (value.length > this.props.minLength && value.length < this.props.maxLength) {
+    if (minL && value.length < minL) {
+      return this.handleErrorMessage(valid, `May not contain less than ${minL} characters`);
+    } if else (maxL && value.length > maxL) {
+      return this.handleErrorMessage(valid, `May not contain more than ${maxL} characters`);
+    } else {
       valid = pattern.test(value);
       return this.handleErrorMessage(valid);
-    } else {
-      return this.handleErrorMessage(valid, 'Not right length');
     }
   }
 
   validatePassword(value) {
-    const min = this.props.minLength !== 0 ? this.props.minLength : 8;
+    const min = this.props.minLength && this.props.minLength !== 0 ? this.props.minLength : 8;
     return this.handleErrorMessage(value.length > min, `Password needs to have more than ${min} characters`);
   }
 
@@ -135,9 +141,9 @@ class GCInput extends Component {
   validateNumber(value) {
     const min = this.props.min;
     const max = this.props.max;
-    if (min > value) {
+    if (min && min > value) {
       return this.handleErrorMessage(false, `Number must be higher than ${min}.`);
-    } else if (max < value) {
+    } else if (max && max < value) {
       return this.handleErrorMessage(false, `Number must be lower than ${max}`);
     }
   }

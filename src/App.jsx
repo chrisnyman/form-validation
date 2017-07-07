@@ -73,6 +73,8 @@ class App extends Component {
         name: 'checkList',
         type: 'checkbox',
         required: true,
+        minLength: 1,
+        maxLength: 2,
         options: [{
           value: 'horse',
           label: 'Choose horse',

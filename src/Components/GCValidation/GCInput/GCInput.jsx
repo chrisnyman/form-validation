@@ -142,6 +142,18 @@ class GCInput extends Component {
     }
   }
 
+  validateCheckbox(value) {
+    if (this.props.options.length > 0) {
+      const minL = this.props.minLength;
+      const maxL = this.props.maxLength;
+      if (minL && minL > value.length) {
+        return `Please select more than ${minL} options`;
+      } else if (maxL && maxL < value.length) {
+        return `Please select less than ${maxL} options`;
+      }
+    }
+  }
+
   isEmpty(v) {
     return (typeof v === 'string' && v !== '') || (typeof v === 'object' && v.length > 0) || (typeof v === 'boolean' && v && this.props.required);
   }
@@ -169,6 +181,9 @@ class GCInput extends Component {
           break;
         case 'textarea':
           error = this.validateTextarea(props.value);
+        case 'checkbox':
+          error = this.validateCheckbox(props.value);
+          break;
         case 'url':
           error = this.validateUrl(props.value);
           break;
@@ -292,8 +307,8 @@ GCInput.defaultProps = {
   disabled: false,
   name: '',
   placeholder: '',
-  maxLength: 50,
-  minLength: 0,
+  maxLength: null,
+  minLength: null,
   maxDate: null,
   minDate: null,
   max: null,

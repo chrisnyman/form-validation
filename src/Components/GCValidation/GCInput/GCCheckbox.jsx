@@ -32,7 +32,8 @@ class GCCheckbox extends Component {
 
   removeFromArray(arr, item) {
     const index = arr.findIndex(el => item === el);
-    return arr.splice(index, item);
+    arr.splice(index, 1);
+    return arr;
   }
 
   handleChange(e) {
@@ -49,10 +50,8 @@ class GCCheckbox extends Component {
     } else {
       let newArray = prevValue;
       if (prevValue.includes(newValue)) {
-        // Remove selected value
         newArray = this.removeFromArray(prevValue, newValue);
       } else {
-        // Add value to array
         newArray.push(newValue);
       }
       this.props.onChange(newArray, this.props.stateName);

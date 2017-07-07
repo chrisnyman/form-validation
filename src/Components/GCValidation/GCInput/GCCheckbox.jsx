@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 class GCCheckbox extends Component {
   matchValues(arr, value) {
@@ -43,9 +44,9 @@ class GCCheckbox extends Component {
 
   renderCheckboxOpts() {
     const props = this.props;
-    return props.options.map((opt) => {
+    return props.options.map((opt, i) => {
       const d = new Date();
-      const uid = d.getTime() * 2;
+      const uid = d.getTime() + i;
       return (
         <div>
           <input

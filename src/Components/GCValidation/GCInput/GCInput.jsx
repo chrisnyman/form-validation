@@ -221,9 +221,9 @@ class GCInput extends Component {
         max={this.props.max}
       />);
     } else if (this.props.type === 'radio') {
-      return (<GCRadio {...this.props} onChange={(v) => this.handleChange(v)} />);
+      return (<GCRadio {...this.props} onChange={v => this.handleChange(v)} />);
     } else if (this.props.type === 'checkbox') {
-      return (<GCCheckbox {...this.props} onChange={(v) => this.handleChange(v)} />);
+      return (<GCCheckbox {...this.props} onChange={v => this.handleChange(v)} />);
     } else {
       return (<input
         className={`${invalidClass} ${disabledClass}`}

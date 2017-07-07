@@ -8,7 +8,9 @@ class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      name: '',
+      ts: '',
+      tm: '',
+      tl: '',
       url: '',
       check: false,
       checkList: 'horse, cat',
@@ -28,20 +30,29 @@ class App extends Component {
 
   render() {
     const formFields = {
-      name: {
-        value: this.state.name,
-        stateName: 'name',
-        name: 'nameTxt',
-        type: 'name',
-        placeholder: 'Please enter your name',
-        required: true,
+      textareaS: {
+        value: this.state.ts,
+        stateName: 'ts',
+        name: 'textSTxt',
+        type: 'textarea',
+        size: 'small',
+        placeholder: 'This is a small textarea',
       },
-      url: {
-        value: this.state.url,
-        stateName: 'url',
-        name: 'urlTxt',
-        type: 'url',
-        placeholder: 'https://',
+      textareaM: {
+        value: this.state.tm,
+        stateName: 'tm',
+        name: 'textMTxt',
+        type: 'textarea',
+        size: 'medium',
+        placeholder: 'This is a medium textarea',
+      },
+      textareaL: {
+        value: this.state.tl,
+        stateName: 'tl',
+        name: 'textLTxt',
+        type: 'textarea',
+        size: 'large',
+        placeholder: 'This is a large textarea',
       },
       check: {
         value: this.state.check,
@@ -100,16 +111,22 @@ class App extends Component {
             {({ fields }) => (
               <div>
                 <label
-                  htmlFor="nameTxt"
+                  htmlFor="textSTxt"
                   className="gc-form__label"
-                >Name</label>
-                {fields.name}
+                >Textarea small</label>
+                {fields.textareaS}
 
                 <label
-                  htmlFor="urlTxt"
+                  htmlFor="textMTxt"
                   className="gc-form__label"
-                >Enter a URL</label>
-                {fields.url}
+                >Textarea medium</label>
+                {fields.textareaM}
+
+                <label
+                  htmlFor="textLTxt"
+                  className="gc-form__label"
+                >Textarea large</label>
+                {fields.textareaL}
 
                 <label
                   htmlFor="checkTxt"

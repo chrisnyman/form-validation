@@ -1,4 +1,7 @@
-.gc-input {
+.gc-input,
+.gc-input__textarea--small,
+.gc-input__textarea--medium,
+.gc-input__textarea--large {
   display: block;
   width: 100%;
   max-width: 320px;
@@ -18,6 +21,24 @@
   padding: 0.625em;
   background-color: #f59393;
   color: white;
+}
+
+.gc-input__textarea--small,
+.gc-input__textarea--medium,
+.gc-input__textarea--large {
+  padding: 0.625em 1.25em;
+}
+
+.gc-input__textarea--small {
+  height: 4em;
+}
+
+.gc-input__textarea--medium {
+  height: 8em;
+}
+
+.gc-input__textarea--large {
+  height: 20em;
 }
 
 /*.gc-input__range-num::after {

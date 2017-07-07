@@ -102,7 +102,7 @@ class GCInput extends Component {
 
   validateUrl(value) {
     let usableUrl = '';
-    if((/^(https:\/\/|http:\/\/)/).test(value)) {
+    if ((/^(https:\/\/|http:\/\/)/).test(value)) {
       usableUrl = value;
     } else {
       usableUrl = 'https://' + value;
@@ -118,7 +118,7 @@ class GCInput extends Component {
     let valid;
     if (minL && value.length < minL) {
       return this.handleErrorMessage(valid, `May not contain less than ${minL} characters`);
-    } if else (maxL && value.length > maxL) {
+    } else if (maxL && value.length > maxL) {
       return this.handleErrorMessage(valid, `May not contain more than ${maxL} characters`);
     } else {
       valid = pattern.test(value);
@@ -235,8 +235,9 @@ class GCInput extends Component {
     const invalidClass = this.state.validationMessage ? 'gc-input--invalid' : '';
     const disabledClass = this.props.disabled ? 'gc-input--disabled' : '';
     if (this.props.type === 'textarea') {
+      const textareaClass = `gc-input__textarea--${this.props.size}`;
       return (<textarea
-        className={`${invalidClass} ${disabledClass}`}
+        className={`${invalidClass} ${disabledClass} ${textareaClass}`}
         disabled={this.props.disabled}
         name={this.props.name}
         defaultValue={this.props.value}
@@ -305,6 +306,7 @@ GCInput.propTypes = {
   sendResultsToForm: PropTypes.func,
   options: PropTypes.array,
   required: PropTypes.bool,
+  size: PropTypes.string,
 };
 
 GCInput.defaultProps = {
@@ -325,6 +327,7 @@ GCInput.defaultProps = {
   sendResultsToForm: null,
   options: [],
   required: false,
+  size: 'medium',
 };
 
 export default GCInput;

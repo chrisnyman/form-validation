@@ -12,10 +12,20 @@ class GCCheckbox extends Component {
     return arr;
   }
 
+  convertToArray(str) {
+    if (str === '') {
+      return [];
+    } else if (str.includes(', ')) {
+      return str.split(', ');
+    } else {
+      return [str];
+    }
+  }
+
   handleChange(e) {
     const props = this.props;
     const selectedValue = e.target.value;
-    const prevValue = props.value.map(i => i);
+    const prevValue = typeof props.value === 'string' ? this.convertToArray(props.value) : props.value.map(i => i);
 
     if (props.options.length === 0) {
       this.props.onChange(!props.value);

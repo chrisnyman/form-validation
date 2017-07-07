@@ -11,7 +11,7 @@ class App extends Component {
       name: '',
       url: '',
       check: false,
-      checkList: ['horse', 'dog'],
+      checkList: 'horse, cat',
       radio: 'cat',
     };
   }
@@ -70,6 +70,7 @@ class App extends Component {
         stateName: 'checkList',
         name: 'checkList',
         type: 'checkbox',
+        required: true,
         options: [{
           value: 'horse',
           label: 'Choose horse',

@@ -24,18 +24,19 @@ class GCCheckbox extends Component {
 
   handleChange(e) {
     const props = this.props;
-    const selectedValue = e.target.value;
-    const prevValue = typeof props.value === 'string' ? this.convertToArray(props.value) : props.value.map(i => i);
-
     if (props.options.length === 0) {
       this.props.onChange(!props.value);
     } else {
+      const selectedValue = e.target.value;
+      const prevValue = typeof props.value === 'string' ? this.convertToArray(props.value) : props.value.map(i => i);
       let newArray = prevValue;
+
       if (prevValue.includes(selectedValue)) {
         newArray = this.removeFromArray(prevValue, selectedValue);
       } else {
         newArray.push(selectedValue);
       }
+
       this.props.onChange(newArray);
     }
   }

@@ -48,12 +48,14 @@ class App extends Component {
         stateName: 'check',
         name: 'checkTxt',
         type: 'checkbox',
+        required: true,
       },
       radio: {
         value: this.state.radio,
         stateName: 'radio',
         name: 'radioList',
         type: 'radio',
+        required: true,
         options: [{
           value: 'horse',
           label: 'Choose horse',

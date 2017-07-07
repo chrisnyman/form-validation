@@ -136,10 +136,15 @@ class GCInput extends Component {
     }
   }
 
+  isEmpty(v) {
+    return (typeof v === 'string' && v !== '') || (v.isArray && v.length !== 0) || (typeof v === 'boolean' && v !== false && this.props.isRequired);
+  }
+
   validateInput() {
     const props = this.props;
     let error = null;
-    if (props.value) {
+    if (this.isEmpty(props.value)) {
+      console.log(props.value);
       switch (props.type) {
         case 'email':
           error = this.validateEmail(props.value);

@@ -37,7 +37,6 @@ class GCCheckbox extends Component {
       } else {
         newArray.push(selectedValue);
       }
-
       this.props.onChange(newArray);
     }
   }

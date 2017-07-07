@@ -28,6 +28,12 @@ class GCInput extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.type === "checkbox" || this.props.type === "radio") {
+      this.validateInput();
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.value !== this.props.value || nextProps.touchedByParent !== this.props.touchedByParent || nextState.validationMessage !== this.state.validationMessage;
   }
@@ -137,14 +143,13 @@ class GCInput extends Component {
   }
 
   isEmpty(v) {
-    return (typeof v === 'string' && v !== '') || (v.isArray && v.length !== 0) || (typeof v === 'boolean' && v !== false && this.props.isRequired);
+    return (typeof v === 'string' && v !== '') || (typeof v === 'object' && v.length > 0) || (typeof v === 'boolean' && v && this.props.required);
   }
 
   validateInput() {
     const props = this.props;
     let error = null;
     if (this.isEmpty(props.value)) {
-      console.log(props.value);
       switch (props.type) {
         case 'email':
           error = this.validateEmail(props.value);
@@ -278,6 +283,7 @@ GCInput.propTypes = {
   touchedByParent: PropTypes.bool,
   sendResultsToForm: PropTypes.func,
   options: PropTypes.array,
+  required: PropTypes.bool,
 };
 
 GCInput.defaultProps = {
@@ -297,6 +303,7 @@ GCInput.defaultProps = {
   touchedByParent: false,
   sendResultsToForm: null,
   options: [],
+  required: false,
 };
 
 export default GCInput;
